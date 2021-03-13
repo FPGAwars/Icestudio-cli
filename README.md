@@ -21,6 +21,12 @@ The Icestudio files used for testing are located in the **Test-files** folder
 ----------------------------------------
 File: Test-files/test-01-info.ice
 ----------------------------------------
+Icestudio ROOT: 
+  Version: 1.2
+  Board: alhambra-ii
+  Blocks: 1
+  Wires: 0
+
 Raw content: 
 { version: '1.2',
   package:
@@ -28,6 +34,5 @@ Raw content:
   design:
    { board: 'alhambra-ii', graph: { blocks: [Array], wires: [] } },
   dependencies: {} }
-
 ```
 
