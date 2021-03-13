@@ -1,0 +1,24 @@
+{
+  "name": "icestudio-cli",
+  "version": "0.0.1",
+  "description": "Working with Icestudio (.ice) files",
+  "main": "test.js",
+  "dependencies": {
+    "colors": "^1.4.0"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FPGAwars/Icestudio-cli.git"
+  },
+  "keywords": [
+    "icestudio",
+    "FPGA"
+  ],
+  "author": "Juan Gonzalez (Obijuan)",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/FPGAwars/Icestudio-cli/issues"
+  },
+  "homepage": "https://github.com/FPGAwars/Icestudio-cli#readme"
+}
