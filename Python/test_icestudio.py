@@ -2,7 +2,7 @@
 
 import unittest
 import json
-from Icestudio import Size, DataInfo
+from Icestudio import Size, DataInfo, Position
 
 
 class TestSize(unittest.TestCase):
@@ -52,7 +52,55 @@ class TestSize(unittest.TestCase):
             json_str, 
             '{"width": 248, "height": 48}')
         
-    
+
+class TestPosition(unittest.TestCase):
+
+    def test_Position(self):
+        """Test the constructor"""
+
+        pos = Position(0,0)
+        self.assertEqual(pos.x, 0)
+        self.assertEqual(pos.y, 0)
+
+        pos = Position(360, 184)
+        self.assertEqual(pos.x, 360)
+        self.assertEqual(pos.y, 184)
+
+
+    def test_Position_str(self):
+        """Test the str method"""
+
+        pos = Position(0,0)
+        print(pos)
+        self.assertEqual(str(pos), "Pos(0, 0)")
+
+        pos = Position(360, 184)
+        self.assertEqual(str(pos), "Pos(360, 184)")
+
+
+    def test_Position_file(self):
+        """Test Position from json files"""
+
+        #-- Open a json test file
+        with open("../Test-files/position.ice") as f:
+             pos = Position(**json.load(f))
+
+        self.assertEqual(pos.x, 360)
+        self.assertEqual(pos.y, 184)
+
+
+    def test_Position_json(self):
+        """Test json method"""
+
+        pos = Position(500, 400)
+
+        #-- Get the json string
+        json_str = json.dumps(pos.json())
+
+        #-- Perform the test
+        self.assertEqual(
+            json_str, 
+            '{"x": 500, "y": 400}')    
 
 
 class TestDataInfo(unittest.TestCase):
