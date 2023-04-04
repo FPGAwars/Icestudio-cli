@@ -2,10 +2,10 @@
 
 import unittest
 import json
-from Icestudio import Size
+from Icestudio import Size, DataInfo
 
 
-class TestIcestudio(unittest.TestCase):
+class TestSize(unittest.TestCase):
 
     def test_Size(self):
         """Test Size constructor"""
@@ -51,7 +51,37 @@ class TestIcestudio(unittest.TestCase):
         self.assertEqual(
             json_str, 
             '{"width": 248, "height": 48}')
+        
+    
 
+
+class TestDataInfo(unittest.TestCase):
+
+    def test_DataInfo(self):
+        """Test the constructor"""
+
+        data = DataInfo("Hello",True)
+        self.assertEqual(data.info, "Hello")
+        self.assertEqual(data.readonly, True)
+
+        data = DataInfo("", False)
+        self.assertEqual(data.info, "")
+        self.assertEqual(data.readonly, False)
+
+    def test_DataInfo_str(self):
+        """Test the str method"""
+
+        data = DataInfo("This is a comment", True)
+        self.assertEqual(str(data), 
+                         "DataInfo: True\n"
+                         "  Info: This is a comment")
+
+        data = DataInfo("", False)
+        self.assertEqual(str(data),
+                         "DataInfo: False\n"
+                         "  Info: ")
+
+        
 
 if __name__ == '__main__':
     unittest.main()
