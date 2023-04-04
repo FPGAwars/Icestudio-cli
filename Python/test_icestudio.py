@@ -68,6 +68,7 @@ class TestDataInfo(unittest.TestCase):
         self.assertEqual(data.info, "")
         self.assertEqual(data.readonly, False)
 
+
     def test_DataInfo_str(self):
         """Test the str method"""
 
@@ -80,8 +81,33 @@ class TestDataInfo(unittest.TestCase):
         self.assertEqual(str(data),
                          "DataInfo: False\n"
                          "  Info: ")
-
         
+
+    def test_DataInfo_file(self):
+        """Test DataInfo from json files"""
+
+        #-- Open a json test file
+        with open("../Test-files/dataInfo.ice") as f:
+            data = DataInfo(**json.load(f))
+
+        self.assertEqual(data.info, "This is a comment")
+        self.assertEqual(data.readonly, True)
+
+
+    def test_DataInfo_json(self):
+        """Test json method"""
+
+        data = DataInfo("Testing...", True)
+
+        #-- Get the json string
+        json_str = json.dumps(data.json())
+
+        #-- Perform the test
+        self.assertEqual(
+            json_str, 
+            '{"info": "Testing...", "readonly": true}')
+
+
 
 if __name__ == '__main__':
     unittest.main()
