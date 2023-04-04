@@ -20,6 +20,7 @@ class Size:
             "height": self.height
         }
 
+
 class Position:
     """Class for representing the position of an Icestudio block"""
 
@@ -64,3 +65,38 @@ class DataInfo:
             "readonly": self.readonly
         }
 
+
+class Block:
+    def __init__(self, 
+                 id="", 
+                 type="",
+                 data={},
+                 position={},
+                 size={}) -> None:
+        
+        self.id = id
+        self.type = type
+        self.data = data
+        self.position = position
+        self.size = size
+
+    def __str__(self) -> str:
+        """String representation"""
+
+        cad = f"id: {self.id}\n"
+        cad += f"Type: {self.type}\n"
+        cad += f"Data: {self.data}\n"
+        cad += f"Pos: {self.position}\n"
+        cad += f"Size: {self.size}\n"
+        return cad
+    
+    def json(self):
+        """Return the class as a Json object"""
+
+        return {
+            "id": self.id,
+            "type": self.type,
+            "data": self.data,
+            "position": self.position,
+            "size": self.size
+        }
