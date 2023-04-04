@@ -100,3 +100,18 @@ class Block:
             "position": self.position,
             "size": self.size
         }
+    
+class Blocks:
+    def __init__(self, *blocks) -> None:
+        self.list = list(blocks)
+
+    def __str__(self) -> str:
+        cad = "\n".join([str(block) for block in self.list])
+        return cad
+    
+    def json(self):
+        """Return the class as a Json object"""
+
+        list_json = [block.json() for block in self.list]
+
+        return list_json

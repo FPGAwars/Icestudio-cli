@@ -2,7 +2,7 @@
 
 import unittest
 import json
-from Icestudio import Size, DataInfo, Position, Block
+from Icestudio import Size, DataInfo, Position, Block, Blocks
 
 
 class TestSize(unittest.TestCase):
@@ -241,7 +241,62 @@ class TestBlock(unittest.TestCase):
                 "size": {'width': 0, 'height': 0}
             })
                          
-    
+
+class TestBlocks(unittest.TestCase):
+
+    def test_Blocks(self):
+        """Test the constructor"""
+
+        block1 = Block(id="id1")
+        block2 = Block(id="id2")
+        blocks = Blocks(block1, block2)
+        self.assertListEqual(blocks.list, [block1, block2])
+
+        blocks = Blocks()
+        self.assertListEqual(blocks.list, [])
+
+
+    def test_Blocks_str(self):
+        """Test the str method"""
+
+        block1 = Block(id="id1")
+        block2 = Block(id="id2")
+        blocks = Blocks(block1, block2)
+        self.assertEqual(str(blocks),
+                        "id: id1\n"
+                        "Type: \n"
+                        "Data: {}\n"
+                        "Pos: {}\n"
+                        "Size: {}\n\n"
+                        "id: id2\n"
+                        "Type: \n"
+                        "Data: {}\n"
+                        "Pos: {}\n"
+                        "Size: {}\n")
+
+    def test_Blocks_file(self):
+        """Test Blocks from json files"""
+
+        #-- Open a json test file
+        with open("../Test-files/blocks.ice") as f:
+            blocks_json = json.load(f)
+            blocks = Blocks(*blocks_json)
+
+        self.assertEqual(blocks.list, blocks_json)
+
+    def test_Blocks_json(self):
+        """Test json method"""
+
+        block1 = Block(id="id1")
+        block2 = Block(id="id2")
+        blocks = Blocks(block1, block2)
+        
+        self.assertEqual(blocks.json(), 
+                         [{'id': 'id1', 'type': '', 'data': {}, 
+                         'position': {}, 'size': {}}, 
+                         {'id': 'id2', 'type': '', 'data': {}, 
+                         'position': {}, 'size': {}}])
+
 
 if __name__ == '__main__':
     unittest.main()
