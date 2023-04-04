@@ -2,7 +2,7 @@
 
 import unittest
 import json
-from Icestudio import Size, DataInfo, Position, Block, Blocks
+from Icestudio import Size, DataInfo, Position, Block, Blocks, Graph
 
 
 class TestSize(unittest.TestCase):
@@ -296,6 +296,52 @@ class TestBlocks(unittest.TestCase):
                          'position': {}, 'size': {}}, 
                          {'id': 'id2', 'type': '', 'data': {}, 
                          'position': {}, 'size': {}}])
+
+
+
+class TestGraph(unittest.TestCase):
+
+
+    def test_Graph(self):
+        """Test the constructor"""
+
+        graph = Graph()
+        self.assertEqual(graph.blocks, [])
+        self.assertEqual(graph.wires, [])
+
+        blocks = Blocks(Block())
+        graph = Graph(blocks)
+        self.assertEqual(graph.blocks, blocks)
+        self.assertEqual(graph.wires, [])
+
+
+    def test_Graph_str(self):
+        """Test str method"""
+
+        graph = Graph()
+        self.assertEqual(str(graph), 
+                        "* Blocks: []\n"
+                        "* Wires: []\n")
+
+
+    def test_Graph_file(self):
+        """Test Graph from json files"""
+
+        #-- Open a json test file
+        with open("../Test-files/graph.ice") as f:
+            graph_json = json.load(f)
+            graph = Graph(**graph_json)
+
+        self.assertEqual(graph.blocks, graph_json['blocks'])
+        self.assertEqual(graph.wires, graph_json['wires'])
+
+
+    def test_Graph_json(self):
+        """Test json method"""
+
+        graph = Graph()
+        self.assertEqual(graph.json(), 
+                         {'blocks': [], 'wires': []})
 
 
 if __name__ == '__main__':

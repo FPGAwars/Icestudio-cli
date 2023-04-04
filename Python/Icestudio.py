@@ -67,6 +67,7 @@ class DataInfo:
 
 
 class Block:
+    """Class for representing an Icestudio block"""
     def __init__(self, 
                  id="", 
                  type="",
@@ -102,6 +103,7 @@ class Block:
         }
     
 class Blocks:
+    """Class for representing a list of icestudio blocks"""
     def __init__(self, *blocks) -> None:
         self.list = list(blocks)
 
@@ -115,3 +117,23 @@ class Blocks:
         list_json = [block.json() for block in self.list]
 
         return list_json
+    
+
+class Graph:
+    """Class for representing an Icestudio circuit"""
+    def __init__(self, blocks=[], wires=[]) -> None:
+        self.blocks = blocks
+        self.wires = wires
+        
+    def __str__(self) -> str:
+        cad = f"* Blocks: {self.blocks}\n"
+        cad += f"* Wires: {self.wires}\n"
+        return cad
+
+    def json(self) -> str:
+        """Return the class as a Json object"""
+
+        return {
+            "blocks": self.blocks,
+            "wires": self.wires
+        }
