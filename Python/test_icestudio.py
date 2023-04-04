@@ -3,6 +3,7 @@
 import unittest
 import json
 from Icestudio import Size, DataInfo, Position, Block, Blocks, Graph
+from Icestudio import Design
 
 
 class TestSize(unittest.TestCase):
@@ -342,6 +343,37 @@ class TestGraph(unittest.TestCase):
         graph = Graph()
         self.assertEqual(graph.json(), 
                          {'blocks': [], 'wires': []})
+
+
+class TestDesign(unittest.TestCase):
+
+    def test_Design(self):
+        """Test the constructor"""
+
+        design = Design()
+        self.assertEqual(design.board, "")
+        self.assertEqual(design.graph, {})
+
+
+    def test_Design_str(self):
+        """Test the str method"""
+
+        design = Design()
+        self.assertEqual(str(design),
+                         "* Design:\n"
+                         "Board: \n"
+                         "Graph: {}\n")
+        
+    def test_Design_file(self):
+        """Test Design from json files"""
+
+        #-- Open a json test file
+        with open("../Test-files/design.ice") as f:
+            design_json = json.load(f)
+            design = Design(**design_json)
+
+        self.assertEqual(design.board, design_json['board'])
+        self.assertEqual(design.graph, design_json['graph'])
 
 
 if __name__ == '__main__':

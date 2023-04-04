@@ -121,6 +121,7 @@ class Blocks:
 
 class Graph:
     """Class for representing an Icestudio circuit"""
+
     def __init__(self, blocks=[], wires=[]) -> None:
         self.blocks = blocks
         self.wires = wires
@@ -130,10 +131,29 @@ class Graph:
         cad += f"* Wires: {self.wires}\n"
         return cad
 
-    def json(self) -> str:
+    def json(self) -> dict:
         """Return the class as a Json object"""
 
         return {
             "blocks": self.blocks,
             "wires": self.wires
+        }
+    
+class Design:
+    """Class for representing an Icestudio design"""
+
+    def __init__(self, board="", graph={}) -> None:
+        self.board = board
+        self.graph = graph
+
+    def __str__(self) -> str:
+        cad = f"* Design:\n"
+        cad += f"Board: {self.board}\n"
+        cad += f"Graph: {self.graph}\n"
+        return cad
+    
+    def json(self) -> dict:
+        return {
+            "board": self.board,
+            "graph": self.graph
         }
