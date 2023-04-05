@@ -157,3 +157,32 @@ class Design:
             "board": self.board,
             "graph": self.graph
         }
+
+class Ice:
+    """Class for representing a full Icestudio circuit"""
+
+    def __init__(self, 
+                 version: str="", 
+                 package={}, 
+                 design={}, 
+                 dependencies={}) -> None:
+        
+        self.version = version
+        self.package = package
+        self.design = design
+        self.dependencies = dependencies
+
+    def __str__(self) -> str:
+        cad = f"Version: {self.version}\n"
+        cad += f"Package: {self.package}\n"
+        cad += f"Design: {self.design}\n"
+        cad += f"Dependencies: {self.dependencies}\n"
+        return cad
+    
+    def json(self) -> dict:
+        return {
+            "version": self.version,
+            "package": self.package,
+            "design": self.design,
+            "dependencies": self.dependencies
+        }

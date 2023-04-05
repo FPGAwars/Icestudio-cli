@@ -3,7 +3,7 @@
 import unittest
 import json
 from Icestudio import Size, DataInfo, Position, Block, Blocks, Graph
-from Icestudio import Design
+from Icestudio import Design, Ice
 
 
 class TestSize(unittest.TestCase):
@@ -375,6 +375,49 @@ class TestDesign(unittest.TestCase):
         self.assertEqual(design.board, design_json['board'])
         self.assertEqual(design.graph, design_json['graph'])
 
+    def test_Design_json(self):
+        """Test json method"""
+
+        design = Design()
+        self.assertEqual(design.json(), 
+                         {'board': "", 'graph': {}})
+
+
+class TestIce(unittest.TestCase):
+
+    def test_Ice(self):
+        """Test the constructor"""
+
+        ice = Ice()
+        self.assertEqual(ice.version, "")
+        self.assertEqual(ice.package, {})
+        self.assertEqual(ice.design, {})
+        self.assertEqual(ice.dependencies, {})
+
+
+    def test_Ice_str(self):
+        """Test the str method"""
+
+        ice = Ice()
+        self.assertEqual(str(ice),
+                         "Version: \n"
+                         "Package: {}\n"
+                         "Design: {}\n"
+                         "Dependencies: {}\n")
+
+
+    def test_Ice_file(self):
+        """Test Ice from json files"""
+
+        #-- Open a json test file
+        with open("../Test-files/test-01-info.ice") as f:
+            ice_json = json.load(f)
+            ice = Ice(**ice_json)
+
+        self.assertEqual(ice.version, ice_json['version'])
+        self.assertEqual(ice.package, ice_json['package'])
+        self.assertEqual(ice.design, ice_json['design'])
+        self.assertEqual(ice.dependencies, ice_json["dependencies"])
 
 if __name__ == '__main__':
     unittest.main()
