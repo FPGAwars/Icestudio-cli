@@ -419,6 +419,18 @@ class TestIce(unittest.TestCase):
         self.assertEqual(ice.design, ice_json['design'])
         self.assertEqual(ice.dependencies, ice_json["dependencies"])
 
+    def test_Ice_json(self):
+        """Test json method"""
+
+        ice = Ice()
+        self.assertEqual(ice.json(), 
+                         {'version': "",
+                          'package': {},
+                          'design' : {},
+                          'dependencies': {}
+                         })
+
+
 if __name__ == '__main__':
     unittest.main()
 
