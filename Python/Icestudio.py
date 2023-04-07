@@ -111,15 +111,27 @@ class Block:
                  id="", 
                  type="",
                  data={},
-                 position={},
+                 position=Position(),
                  size=Size()) -> None:
         
         self.id = id
         self.type = type
         self.data = data
-        self.position = position
 
-        #-- Size property
+        #------- Position property
+        #-- Check if it is a Position object
+        if isinstance(position, Position):
+            self.position = position
+
+        #-- Check if it has been defined as an Json object (dictionary)
+        elif isinstance(position, dict):
+            self.position = Position(**position)
+
+        #-- Unknown type for the design attribute
+        else:
+            raise(AttributeError)
+
+        #------- Size property
         #-- Check if it is a Size object
         if isinstance(size, Size):
             self.size = size
@@ -150,7 +162,7 @@ class Block:
             "id": self.id,
             "type": self.type,
             "data": self.data,
-            "position": self.position,
+            "position": self.position.json(),
             "size": self.size.json()
         }
     
