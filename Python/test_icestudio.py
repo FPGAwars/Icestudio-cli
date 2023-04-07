@@ -204,8 +204,7 @@ class TestBlock(unittest.TestCase):
         
         self.assertEqual(block.id, "id01")
         self.assertEqual(block.type, "basic.info")
-        #self.assertEqual(block.data, {'info': '', 'readonly': True})
-        # TODO: block.data == DataInfo()
+        self.assertEqual(block.data, DataInfo())
         self.assertEqual(block.position, Position(0,0))
         self.assertEqual(block.size, Size(0,0))
 
@@ -217,9 +216,7 @@ class TestBlock(unittest.TestCase):
         
         self.assertEqual(block.id, "9838541d-8656-43e3-8d83-69d14ebd9622")
         self.assertEqual(block.type, "basic.info")
-        #self.assertEqual(block.data, {'info': 'This is a comment',
-        #                              'readonly': False})
-        # TODO: block.data == DataInfo('This is a comment', False)
+        self.assertEqual(block.data, DataInfo("This is a comment", False))
         self.assertEqual(block.position, Position(360, 184))
         self.assertEqual(block.size, Size(248, 48))
 
@@ -230,7 +227,7 @@ class TestBlock(unittest.TestCase):
 
         block = Block("9838541d-8656-43e3-8d83-69d14ebd9622",
                       "basic.info",
-                      DataInfo("This is a comment",False).json(),
+                      DataInfo("This is a comment",False),
                       Position(360, 184).json(),
                       Size(248, 48))
 
@@ -266,10 +263,7 @@ class TestBlock(unittest.TestCase):
         self.assertEqual(block.id, "9838541d-8656-43e3-8d83-69d14ebd9622")
         self.assertEqual(block.type, "basic.info")
 
-        #-- TODO: block.data == DataInfo("This is a comment", True)
-        #self.assertEqual(block.data, {"info": "This is a comment",
-        #                              "readonly": True})
-
+        self.assertEqual(block.data, DataInfo("This is a comment", True))
         self.assertEqual(block.position, Position(360, 184))
 
         self.assertIsInstance(block.size, Size)

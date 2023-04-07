@@ -124,7 +124,17 @@ class DataInfo:
         cad += f"Readonly: {self.readonly}\n"
         return cad
 
-    
+    def __repr__(self) -> str:
+        return str(self)
+
+    def __eq__(self, __value: object) -> bool:
+        """Compare two objects"""
+
+        if isinstance(__value, DataInfo):
+            return (self.info == __value.info) and \
+                   (self.readonly == __value.readonly)
+
+
     def json(self):
         """Return the class as a Json object"""
 
