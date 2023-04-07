@@ -74,13 +74,26 @@ class Block:
                  type="",
                  data={},
                  position={},
-                 size={}) -> None:
+                 size=Size()) -> None:
         
         self.id = id
         self.type = type
         self.data = data
         self.position = position
-        self.size = size
+
+        #-- Size property
+        #-- Check if it is a Size object
+        if isinstance(size, Size):
+            self.size = size
+
+        #-- Check if have been defined as an Json object (dictionary)
+        elif isinstance(size, dict):
+            self.size = Size(size)
+
+        #-- Unknown type for the design attribute
+        else:
+            raise(AttributeError)
+
 
     def __str__(self) -> str:
         """String representation"""
@@ -100,7 +113,7 @@ class Block:
             "type": self.type,
             "data": self.data,
             "position": self.position,
-            "size": self.size
+            "size": self.size.json()
         }
     
 class Blocks:
@@ -172,7 +185,7 @@ class Ice:
         self.package = package
 
         #-- Design property
-        #-- Check if it a Design object
+        #-- Check if it is a Design object
         if isinstance(design, Design):
             self.design = design
 
