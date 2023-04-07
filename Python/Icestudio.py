@@ -28,6 +28,9 @@ class Size:
         cad = f"Size({self.width}, {self.height})"
         return cad
     
+    def __repr__(self) -> str:
+        return str(self)
+    
     def json(self):
         """Return the class as a Json object"""
     
@@ -73,6 +76,17 @@ class Position:
         cad = f"Pos({self.x}, {self.y})"
         return cad
     
+    def __repr__(self) -> str:
+        return str(self)
+
+    def __eq__(self, __value: object) -> bool:
+        """Compare two objects"""
+
+        if isinstance(__value, Position):
+            return (self.x == __value.x) and \
+                   (self.y == __value.y)
+    
+
     def json(self):
         """Return the class as a Json object"""
 

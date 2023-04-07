@@ -192,8 +192,7 @@ class TestBlock(unittest.TestCase):
         self.assertEqual(block.id, "id01")
         self.assertEqual(block.type, "basic.info")
         self.assertEqual(block.data, {'info': '', 'readonly': True})
-        #self.assertEqual(block.position, Position(0, 0))
-        #-- TODO: block.position == Position(0,0)?
+        self.assertEqual(block.position, Position(0,0))
         self.assertEqual(block.size, Size(0,0))
 
         block = Block("9838541d-8656-43e3-8d83-69d14ebd9622",
@@ -206,11 +205,9 @@ class TestBlock(unittest.TestCase):
         self.assertEqual(block.type, "basic.info")
         self.assertEqual(block.data, {'info': 'This is a comment',
                                       'readonly': False})
-        #self.assertEqual(block.position, {'x': 360, 'y': 184})
+        self.assertEqual(block.position, Position(360, 184))
         self.assertEqual(block.size, Size(248, 48))
 
-       
-    
         
 
     def test_Block_str(self):
