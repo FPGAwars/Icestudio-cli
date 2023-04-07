@@ -25,7 +25,7 @@ class TestSize(unittest.TestCase):
         self.assertEqual(str(exc.exception), "Width is not an Integer value")
 
         #-- Check and invalid height argument
-        with self.assertRaises(ArithmeticError) as exc:
+        with self.assertRaises(AttributeError) as exc:
             Size(0, "Go!")
         self.assertEqual(str(exc.exception), "Height is not an Integer value")
         

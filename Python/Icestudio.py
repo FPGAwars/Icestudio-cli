@@ -18,7 +18,7 @@ class Size:
             self.height = height
         else:
             #-- Height is an invalid argument (invalid type)
-            raise ArithmeticError("Height is not an Integer value")
+            raise AttributeError("Height is not an Integer value")
 
     
     def __str__(self) -> str:
