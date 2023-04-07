@@ -20,6 +20,13 @@ class Size:
             "width" : self.width,
             "height": self.height
         }
+    
+    def __eq__(self, __value: object) -> bool:
+        """Compare two Size objects"""
+
+        if isinstance(__value, Size):
+            return (self.width == __value.width) and \
+                   (self.height == __value.height)
 
 
 class Position:

@@ -19,6 +19,12 @@ class TestSize(unittest.TestCase):
         self.assertEqual(size.width, 248)
         self.assertEqual(size.height, 48)
 
+    def test_eq(self):
+        """Test == operator"""
+
+        self.assertTrue(Size(100, 200) == Size(100, 200))
+        self.assertFalse(Size(1,2) == Size(3,4))
+
 
     def test_Size_str(self):
         """Test Size str method"""
