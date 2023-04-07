@@ -159,13 +159,14 @@ class TestDataInfo(unittest.TestCase):
 
         data = DataInfo("This is a comment", True)
         self.assertEqual(str(data), 
-                         "DataInfo: True\n"
-                         "  Info: This is a comment")
+                         "Info: This is a comment\n"
+                         "Readonly: True\n")
+                         
 
         data = DataInfo("", False)
         self.assertEqual(str(data),
-                         "DataInfo: False\n"
-                         "  Info: ")
+                         "Info: \n"
+                         "Readonly: False\n")
         
 
     def test_DataInfo_file(self):
@@ -276,7 +277,7 @@ class TestBlock(unittest.TestCase):
 
         block = Block("id01", 
                       "basic.info",
-                      DataInfo().json(),
+                      DataInfo(),
                       Position(0,0),
                       Size(0,0))
         
@@ -312,12 +313,12 @@ class TestBlocks(unittest.TestCase):
         self.assertEqual(str(blocks),
                         "id: id1\n"
                         "Type: \n"
-                        "Data: {}\n"
+                        "Data: Info: \nReadonly: True\n\n"
                         "Pos: Pos(0, 0)\n"
                         "Size: Size(0, 0)\n\n"
                         "id: id2\n"
                         "Type: \n"
-                        "Data: {}\n"
+                        "Data: Info: \nReadonly: True\n\n"
                         "Pos: Pos(0, 0)\n"
                         "Size: Size(0, 0)\n")
 
@@ -339,12 +340,14 @@ class TestBlocks(unittest.TestCase):
         blocks = Blocks(block1, block2)
         
         self.assertEqual(blocks.json(), 
-                         [{'id': 'id1', 'type': '', 'data': {}, 
+                         [{'id': 'id1', 'type': '', 
+                           'data': {'info': '', 'readonly': True}, 
                            'position': {'x': 0, 'y': 0},
                            'size': {'width': 0, 'height': 0}}, 
-                         {'id': 'id2', 'type': '', 'data': {}, 
-                         'position': {'x':0, 'y':0}, 
-                         'size': {'width': 0, 'height': 0}}])
+                         {'id': 'id2', 'type': '', 
+                          'data': {'info': '', 'readonly': True}, 
+                          'position': {'x':0, 'y':0}, 
+                          'size': {'width': 0, 'height': 0}}])
 
 
 

@@ -120,9 +120,10 @@ class DataInfo:
     def __str__(self) -> str:
         """String representation"""
 
-        cad = f"DataInfo: {self.readonly}\n"
-        cad += f"  Info: {self.info}"
+        cad = f"Info: {self.info}\n"
+        cad += f"Readonly: {self.readonly}\n"
         return cad
+
     
     def json(self):
         """Return the class as a Json object"""
@@ -138,7 +139,7 @@ class Block:
     def __init__(self, 
                  id="", 
                  type="",
-                 data={},
+                 data=DataInfo(),
                  position=Position(),
                  size=Size()) -> None:
         
@@ -189,7 +190,7 @@ class Block:
         return {
             "id": self.id,
             "type": self.type,
-            "data": self.data,
+            "data": self.data.json(),
             "position": self.position.json(),
             "size": self.size.json()
         }
