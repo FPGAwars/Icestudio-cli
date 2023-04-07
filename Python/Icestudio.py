@@ -145,7 +145,20 @@ class Block:
         
         self.id = id
         self.type = type
-        self.data = data
+        
+
+        #-------- Data attribute
+        #-- Check if it is a DataInfo object
+        if isinstance(data, DataInfo):
+            self.data = data
+
+        #-- Check if it has been defined as an Json object (dictionary)
+        elif isinstance(data, dict):
+            self.data = DataInfo(**data)
+        
+        #-- Unknown type for the design attribute
+        else:
+            raise AttributeError()
 
         #------- Position property
         #-- Check if it is a Position object
