@@ -4,6 +4,7 @@ class Size:
     """Class for representing the size of an Icestudio block"""
 
     def __init__(self, width:int=0, height:int=0):
+        """Create a Size Object"""
 
         #-- Set the width attribute
         if isinstance(width, int):
@@ -47,8 +48,24 @@ class Position:
     """Class for representing the position of an Icestudio block"""
 
     def __init__(self, x=0, y=0) -> None:
-        self.x = x
-        self.y = y
+        """Create a position object"""
+
+        #-- Set the x attribute
+        if isinstance(x, int):
+            self.x = x
+
+            #-- Invalid type for x
+        else:
+            raise AttributeError("x is not an Integer value")
+        
+        #-- Set the y attribute
+        if isinstance(y, int):
+            self.y = y
+
+            #-- Invalid type for y
+        else:
+            raise AttributeError("y is not an Integer value")
+
 
     def __str__(self) -> str:
         """String representation"""

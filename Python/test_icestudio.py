@@ -82,6 +82,18 @@ class TestPosition(unittest.TestCase):
         self.assertEqual(pos.x, 360)
         self.assertEqual(pos.y, 184)
 
+        #-- Create a Position with invalid type of x
+        with self.assertRaises(AttributeError) as exc:
+            Position("Hi!", 200)
+        
+        self.assertEqual(str(exc.exception), "x is not an Integer value")
+
+        #-- Invalid type for y
+        with self.assertRaises(AttributeError) as exc:
+            Position(0, "You!")
+
+        self.assertEqual(str(exc.exception), "y is not an Integer value")
+
 
     def test_Position_str(self):
         """Test the str method"""
