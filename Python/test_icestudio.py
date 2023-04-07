@@ -391,7 +391,8 @@ class TestIce(unittest.TestCase):
         ice = Ice()
         self.assertEqual(ice.version, "")
         self.assertEqual(ice.package, {})
-        self.assertEqual(ice.design, {})
+        self.assertIsInstance(ice.design, Design)
+        #--TODO: Compare if object ice.design is equal to the empty one
         self.assertEqual(ice.dependencies, {})
 
 
@@ -402,7 +403,9 @@ class TestIce(unittest.TestCase):
         self.assertEqual(str(ice),
                          "Version: \n"
                          "Package: {}\n"
-                         "Design: {}\n"
+                         "Design: * Design:\n"
+                         "Board: \n"
+                         "Graph: {}\n\n"
                          "Dependencies: {}\n")
 
 
@@ -416,7 +419,12 @@ class TestIce(unittest.TestCase):
 
         self.assertEqual(ice.version, ice_json['version'])
         self.assertEqual(ice.package, ice_json['package'])
-        self.assertEqual(ice.design, ice_json['design'])
+
+        
+        self.assertIsInstance(ice.design, Design)
+        #-- TODO: Comparison: ice.design == ice_json['design']
+        #self.assertEqual(ice.design, ice_json['design'])
+
         self.assertEqual(ice.dependencies, ice_json["dependencies"])
 
     def test_Ice_json(self):
@@ -424,11 +432,14 @@ class TestIce(unittest.TestCase):
 
         ice = Ice()
         self.assertEqual(ice.json(), 
-                         {'version': "",
-                          'package': {},
-                          'design' : {},
-                          'dependencies': {}
-                         })
+                          {'version': "",
+                           'package': {},
+                           'design' : {
+                               'board': '',
+                               'graph': {}
+                           },
+                           'dependencies': {}
+                          })
 
 
 if __name__ == '__main__':

@@ -1,3 +1,4 @@
+import json
 
 class Size:
     """Class for representing the size of an Icestudio block"""
@@ -164,12 +165,26 @@ class Ice:
     def __init__(self, 
                  version: str="", 
                  package={}, 
-                 design={}, 
+                 design=Design(), 
                  dependencies={}) -> None:
         
         self.version = version
         self.package = package
-        self.design = design
+
+        #-- Design property
+        #-- Check if it a Design object
+        if isinstance(design, Design):
+            self.design = design
+
+        #-- Check if have been defined as an Json object (dictionary)
+        elif isinstance(design, dict):
+            self.design = Design(design)
+
+        #-- Unknown type for the design attribute
+        else:
+            raise(AttributeError)
+        
+
         self.dependencies = dependencies
 
     def __str__(self) -> str:
@@ -183,6 +198,19 @@ class Ice:
         return {
             "version": self.version,
             "package": self.package,
-            "design": self.design,
+            "design": self.design.json(),
             "dependencies": self.dependencies
         }
+    
+    def open_file(self, file) -> None:
+        """Read an Icestudio circuito (.ice)"""
+
+        #-- Read the json file and create the object
+        with open(file) as f:
+            ice_json = json.load(f)
+            
+        #-- Initialize the class from the json object
+        self.version = ice_json['version']
+        self.package = ice_json['package']
+        self.design = Design(ice_json['design'])
+        self.dependencies = ice_json['dependencies']
