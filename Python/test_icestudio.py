@@ -220,7 +220,12 @@ class TestBlock(unittest.TestCase):
         self.assertEqual(block.position, Position(360, 184))
         self.assertEqual(block.size, Size(248, 48))
 
-        
+        #-- Check for invalid data
+        with self.assertRaises(AttributeError) as exc:
+            Block(3)
+
+        self.assertEqual(str(exc.exception), "id is not a String")
+
 
     def test_Block_str(self):
         """Test the str method"""

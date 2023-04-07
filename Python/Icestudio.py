@@ -153,7 +153,17 @@ class Block:
                  position=Position(),
                  size=Size()) -> None:
         
-        self.id = id
+        #--- Id Attribute
+        #-- Check if it is an String
+        if isinstance(id, str):
+            self.id = id
+
+        #-- Unknown type for the id attribute
+        else:
+            raise AttributeError("id is not a String")
+
+
+
         self.type = type
         
 
