@@ -19,6 +19,18 @@ class TestSize(unittest.TestCase):
         self.assertEqual(size.width, 248)
         self.assertEqual(size.height, 48)
 
+        #-- Create a Size object with invalid arguments
+        with self.assertRaises(AttributeError) as exc:
+            Size("Hi",0)
+        self.assertEqual(str(exc.exception), "Width is not an Integer value")
+
+        #-- Check and invalid height argument
+        with self.assertRaises(ArithmeticError) as exc:
+            Size(0, "Go!")
+        self.assertEqual(str(exc.exception), "Height is not an Integer value")
+        
+
+
     def test_eq(self):
         """Test == operator"""
 
@@ -169,22 +181,23 @@ class TestBlock(unittest.TestCase):
         self.assertEqual(block.type, "basic.info")
         self.assertEqual(block.data, {'info': '', 'readonly': True})
         self.assertEqual(block.position, {'x': 0, 'y': 0})
-        #self.assertEqual(block.size, {'width': 0, 'height': 0})
-        #-- TODO: block.size == Size(0,0)?
+        self.assertEqual(block.size, Size(0,0))
 
         block = Block("9838541d-8656-43e3-8d83-69d14ebd9622",
                       "basic.info",
                       DataInfo("This is a comment",False).json(),
                       Position(360, 184).json(),
-                      Size(248, 48).json())
+                      Size(248, 48))
         
         self.assertEqual(block.id, "9838541d-8656-43e3-8d83-69d14ebd9622")
         self.assertEqual(block.type, "basic.info")
         self.assertEqual(block.data, {'info': 'This is a comment',
                                       'readonly': False})
         self.assertEqual(block.position, {'x': 360, 'y': 184})
-        #self.assertEqual(block.size, {'width': 248, 'height': 48})
-        #-- TODO: block.size == Size(248, 48)
+        self.assertEqual(block.size, Size(248, 48))
+
+       
+    
         
 
     def test_Block_str(self):
@@ -232,8 +245,7 @@ class TestBlock(unittest.TestCase):
         self.assertEqual(block.position, {"x": 360, "y": 184})
 
         self.assertIsInstance(block.size, Size)
-        #-- TODO: is block.size == Size(248, 48)?
-        #self.assertEqual(block.size, {"width": 248, "height": 48})
+        self.assertEqual(block.size, Size(248, 48))
         
 
     def test_Block_json(self):

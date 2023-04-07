@@ -3,9 +3,23 @@ import json
 class Size:
     """Class for representing the size of an Icestudio block"""
 
-    def __init__(self, width=0, height=0):
-        self.width = width
-        self.height = height
+    def __init__(self, width:int=0, height:int=0):
+
+        #-- Set the width attribute
+        if isinstance(width, int):
+            self.width = width
+
+            #-- Width is an invalid argument (invalid type)
+        else:
+            raise AttributeError("Width is not an Integer value")
+        
+        #-- Set the height attribute
+        if isinstance(height, int):
+            self.height = height
+        else:
+            #-- Height is an invalid argument (invalid type)
+            raise ArithmeticError("Height is not an Integer value")
+
     
     def __str__(self) -> str:
         """String representation"""
@@ -93,9 +107,9 @@ class Block:
         if isinstance(size, Size):
             self.size = size
 
-        #-- Check if have been defined as an Json object (dictionary)
+        #-- Check if it has been defined as an Json object (dictionary)
         elif isinstance(size, dict):
-            self.size = Size(size)
+            self.size = Size(**size)
 
         #-- Unknown type for the design attribute
         else:
