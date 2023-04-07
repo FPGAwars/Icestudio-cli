@@ -141,6 +141,18 @@ class TestDataInfo(unittest.TestCase):
         self.assertEqual(data.info, "")
         self.assertEqual(data.readonly, False)
 
+        #-- Create a DataInfo with invalid type of info
+        with self.assertRaises(AttributeError) as exc:
+            DataInfo(3, True)
+        
+        self.assertEqual(str(exc.exception), "info is not a String")
+
+        #-- Create a DataInfo with invalid type of readonly
+        with self.assertRaises(ArithmeticError) as exc:
+            DataInfo("Comment", 3)
+
+        self.assertEqual(str(exc.exception), "readonly is not Boolean")
+
 
     def test_DataInfo_str(self):
         """Test the str method"""

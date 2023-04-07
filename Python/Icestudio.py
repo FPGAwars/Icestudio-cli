@@ -99,9 +99,23 @@ class Position:
 class DataInfo:
     """Class for representing the data part of the Info blocks"""
 
-    def __init__(self, info="", readonly=True) -> None:
-        self.info = info
-        self.readonly = readonly
+    def __init__(self, info:str="", readonly:bool=True) -> None:
+
+        #-- Set the info attribute
+        if isinstance(info, str):
+            self.info = info
+
+        else:
+            raise AttributeError("info is not a String")
+        
+        #-- Set the readonly attribute
+        if isinstance(readonly, bool):
+            self.readonly = readonly
+
+        else:
+            raise ArithmeticError("readonly is not Boolean")
+
+
 
     def __str__(self) -> str:
         """String representation"""
