@@ -245,6 +245,13 @@ class TestBlock(unittest.TestCase):
 
         self.assertEqual(str(exc.exception), "Unknow type for data")
 
+        #-- Invalid position type
+        with self.assertRaises(AttributeError) as exc:
+            Block("id1", "basic.info", DataInfo(), 3)
+
+        self.assertEqual(str(exc.exception), "Unknow type for position")
+
+
 
     def test_Block_str(self):
         """Test the str method"""

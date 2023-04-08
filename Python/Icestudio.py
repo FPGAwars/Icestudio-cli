@@ -208,7 +208,7 @@ class Block:
 
         #-- Unknown type for the design attribute
         else:
-            raise(AttributeError)
+            raise AttributeError("Unknow type for position")
 
         #------- Size property
         #-- Check if it is a Size object
