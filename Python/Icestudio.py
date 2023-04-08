@@ -313,9 +313,26 @@ class Graph:
 class Design:
     """Class for representing an Icestudio design"""
 
-    def __init__(self, board="", graph={}) -> None:
-        self.board = board
-        self.graph = graph
+    def __init__(self, board="", graph=Graph()) -> None:
+
+        #--- Check board attribute
+        if (isinstance(board, str)):
+            self.board = board
+
+        else:
+            raise AttributeError("board is not a string")
+
+        #-- Check Graph attribute
+        if isinstance(graph, Graph):
+            self.graph = graph
+
+        #-- Check if it is a dict (json object)    
+        elif isinstance(graph, dict):
+            self.graph = Graph(**graph)
+        
+        else:
+            raise AttributeError("Unknown type for Graph")
+
 
     def __str__(self) -> str:
         cad = f"* Design:\n"
@@ -326,7 +343,7 @@ class Design:
     def json(self) -> dict:
         return {
             "board": self.board,
-            "graph": self.graph
+            "graph": self.graph.json()
         }
 
 class Ice:
