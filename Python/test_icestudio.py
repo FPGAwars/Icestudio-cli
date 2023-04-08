@@ -160,7 +160,8 @@ class TestPin(unittest.TestCase):
 
         pin = Pin("0", "Hi", "Dude!")
         self.assertEqual(str(pin), "Pin(0, Hi, Dude!)")
-        print(pin)
+
+
 
 
 

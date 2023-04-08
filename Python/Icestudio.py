@@ -137,6 +137,7 @@ class Pin:
     def __repr__(self) -> str:
         return str(self)
 
+    #-- TODO: json method, __eq__ method
 
 class DataInfo:
     """Class for representing the data part of the Info blocks"""
