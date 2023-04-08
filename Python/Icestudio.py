@@ -221,7 +221,7 @@ class Block:
 
         #-- Unknown type for the design attribute
         else:
-            raise(AttributeError)
+            raise AttributeError("Unknow type for size")
 
 
     def __str__(self) -> str:

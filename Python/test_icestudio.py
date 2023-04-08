@@ -251,6 +251,12 @@ class TestBlock(unittest.TestCase):
 
         self.assertEqual(str(exc.exception), "Unknow type for position")
 
+        #-- Invalid Size type
+        with self.assertRaises(AttributeError) as exc:
+            Block("id1", "basic.info", DataInfo(), Position(), 3)
+
+        self.assertEqual(str(exc.exception), "Unknow type for size")
+
 
 
     def test_Block_str(self):
