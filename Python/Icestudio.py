@@ -248,7 +248,22 @@ class Block:
 class Blocks:
     """Class for representing a list of icestudio blocks"""
     def __init__(self, *blocks) -> None:
-        self.list = list(blocks)
+
+        #-- Empty list initially
+        self.list = []
+
+        #-- Check that all the arguments are of type Block
+        for block in blocks:
+            if isinstance(block, Block):
+                self.list.append(block)
+
+            #-- The block is given as a dicctionary (json)
+            elif isinstance(block, dict):
+                self.list.append(Block(**block))
+
+            else:
+                raise AttributeError("Argument is not of block type")
+
 
     def __str__(self) -> str:
         cad = "\n".join([str(block) for block in self.list])
@@ -265,8 +280,21 @@ class Blocks:
 class Graph:
     """Class for representing an Icestudio circuit"""
 
-    def __init__(self, blocks=[], wires=[]) -> None:
-        self.blocks = blocks
+    def __init__(self, blocks=Blocks(), wires=[]) -> None:
+
+        #-- Set the blocks attribute
+        if isinstance(blocks, Blocks):
+            self.blocks = blocks
+
+        #-- Given as a list (json object)
+        elif isinstance(blocks, list):
+            self.blocks = Blocks(*blocks)
+
+            #-- Invalid type for blocks
+        else:
+            raise AttributeError("blocks is not of type Blocks")
+
+
         self.wires = wires
         
     def __str__(self) -> str:
@@ -278,7 +306,7 @@ class Graph:
         """Return the class as a Json object"""
 
         return {
-            "blocks": self.blocks,
+            "blocks": self.blocks.json(),
             "wires": self.wires
         }
     
