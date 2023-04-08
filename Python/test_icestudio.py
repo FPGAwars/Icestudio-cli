@@ -222,9 +222,28 @@ class TestBlock(unittest.TestCase):
 
         #-- Check for invalid data
         with self.assertRaises(AttributeError) as exc:
+            #-- Invalid id: Should be a string
             Block(3)
 
         self.assertEqual(str(exc.exception), "id is not a String")
+
+        with self.assertRaises(AttributeError) as exc:
+            #-- Invalid block type: Should be a string
+            Block("id1", 3)
+
+        self.assertEqual(str(exc.exception), "type is not a String")
+
+        with self.assertRaises(AttributeError) as exc:
+            #-- Invalid type name
+            Block("id1", "Hi")
+
+        self.assertEqual(str(exc.exception), "Unknow block type name")
+
+        #-- Invalid data type
+        with self.assertRaises(AttributeError) as exc:
+            Block("id1", "basic.info", 5)
+
+        self.assertEqual(str(exc.exception), "Unknow type for data")
 
 
     def test_Block_str(self):
@@ -315,12 +334,12 @@ class TestBlocks(unittest.TestCase):
         blocks = Blocks(block1, block2)
         self.assertEqual(str(blocks),
                         "id: id1\n"
-                        "Type: \n"
+                        "Type: basic.info\n"
                         "Data: Info: \nReadonly: True\n\n"
                         "Pos: Pos(0, 0)\n"
                         "Size: Size(0, 0)\n\n"
                         "id: id2\n"
-                        "Type: \n"
+                        "Type: basic.info\n"
                         "Data: Info: \nReadonly: True\n\n"
                         "Pos: Pos(0, 0)\n"
                         "Size: Size(0, 0)\n")
@@ -343,11 +362,11 @@ class TestBlocks(unittest.TestCase):
         blocks = Blocks(block1, block2)
         
         self.assertEqual(blocks.json(), 
-                         [{'id': 'id1', 'type': '', 
+                         [{'id': 'id1', 'type': 'basic.info', 
                            'data': {'info': '', 'readonly': True}, 
                            'position': {'x': 0, 'y': 0},
                            'size': {'width': 0, 'height': 0}}, 
-                         {'id': 'id2', 'type': '', 
+                         {'id': 'id2', 'type': 'basic.info', 
                           'data': {'info': '', 'readonly': True}, 
                           'position': {'x':0, 'y':0}, 
                           'size': {'width': 0, 'height': 0}}])

@@ -148,12 +148,12 @@ class Block:
     """Class for representing an Icestudio block"""
     def __init__(self, 
                  id="", 
-                 type="",
+                 type="basic.info",
                  data=DataInfo(),
                  position=Position(),
                  size=Size()) -> None:
         
-        #--- Id Attribute
+        #------------ Id Attribute
         #-- Check if it is an String
         if isinstance(id, str):
             self.id = id
@@ -162,23 +162,40 @@ class Block:
         else:
             raise AttributeError("id is not a String")
 
+        #--------- Type Attribute
+        #-- Check if it is a valid string
+        if isinstance(type, str):
 
+            #-- Check if the string represent a valid type
+            match(type):
+                case "basic.info":
+                    self.type = type
+                case _:
+                    raise AttributeError("Unknow block type name")
 
-        self.type = type
-        
+        else:
+            raise AttributeError("type is not a String")
 
         #-------- Data attribute
-        #-- Check if it is a DataInfo object
-        if isinstance(data, DataInfo):
-            self.data = data
+        match(type):
 
-        #-- Check if it has been defined as an Json object (dictionary)
-        elif isinstance(data, dict):
-            self.data = DataInfo(**data)
+            case "basic.info":
+                #-- Check if it is a DataInfo object
+                if isinstance(data, DataInfo):
+                    self.data = data
+
+                #-- Check if it has been defined as an Json object (dictionary)
+                elif isinstance(data, dict):
+                    self.data = DataInfo(**data)
+
+                else:
+                    raise AttributeError("Unknow type for data")
+
+            case _:
         
-        #-- Unknown type for the design attribute
-        else:
-            raise AttributeError()
+                #-- Unknown type for the design attribute
+                raise AttributeError("Unsupported block type")
+
 
         #------- Position property
         #-- Check if it is a Position object
