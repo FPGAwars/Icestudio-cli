@@ -96,6 +96,48 @@ class Position:
         }
 
 
+class Pin:
+    """Class for representing one pin"""
+
+    def __init__(self, 
+                 index: str = "0", #-- Pin position in icestudio
+                 name: str = "NULL",  #-- Pin name
+                 value: str = "NULL", #--- ¿?
+                 ) -> None:
+        """Pin constructor"""
+
+        #----- index property
+        if isinstance(index, str):
+            self.index = index
+
+        #-- Invalid type for index
+        else:
+            raise AttributeError("Invalid type for index")
+        
+        #----- Name property
+        if isinstance(name, str):
+            self.name = name
+
+        #-- Invalid type for name
+        else:
+            raise AttributeError("Invalid type for name")
+        
+        #----- Value property
+        if isinstance(value, str):
+            self.value = value
+
+        #-- Invalid type for value
+        else:
+            raise AttributeError("Invalid type for value")
+        
+    def __str__(self) -> str:
+        cad = (f"Pin({self.index}, {self.name}, {self.value})")
+        return cad
+    
+    def __repr__(self) -> str:
+        return str(self)
+
+
 class DataInfo:
     """Class for representing the data part of the Info blocks"""
 
@@ -167,11 +209,10 @@ class Block:
         if isinstance(type, str):
 
             #-- Check if the string represent a valid type
-            match(type):
-                case "basic.info":
-                    self.type = type
-                case _:
-                    raise AttributeError("Unknow block type name")
+            if type in ["basic.info", "basic.output"]:
+                self.type = type
+            else:
+                raise AttributeError("Unknow block type name")
 
         else:
             raise AttributeError("type is not a String")

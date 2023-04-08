@@ -3,7 +3,7 @@
 import unittest
 import json
 from Icestudio import Size, DataInfo, Position, Block, Blocks, Graph
-from Icestudio import Design, Ice
+from Icestudio import Design, Ice, Pin
 
 
 class TestSize(unittest.TestCase):
@@ -126,6 +126,43 @@ class TestPosition(unittest.TestCase):
             pos.json(), 
             {"x": 500, "y": 400}
         )    
+
+
+class TestPin(unittest.TestCase):
+
+    def test_Pin(self):
+        """Test the constructor"""
+
+        pin = Pin()
+        self.assertEqual(pin.index, "0")
+        self.assertEqual(pin.name, "NULL")
+        self.assertEqual(pin.value, "NULL")
+
+        #-- check for invalid arguments
+        with self.assertRaises(AttributeError) as exc:
+            Pin(3)
+
+        self.assertEqual(str(exc.exception), "Invalid type for index")
+
+        with self.assertRaises(AttributeError) as exc:
+            Pin("0", 3)
+
+        self.assertEqual(str(exc.exception), "Invalid type for name")
+
+        with self.assertRaises(AttributeError) as exc:
+            Pin("0", "NULL", 3)
+
+        self.assertEqual(str(exc.exception), "Invalid type for value")
+
+
+    def test_Pin_str(self):
+        """Test the str method"""
+
+        pin = Pin("0", "Hi", "Dude!")
+        self.assertEqual(str(pin), "Pin(0, Hi, Dude!)")
+        print(pin)
+
+
 
 
 class TestDataInfo(unittest.TestCase):
