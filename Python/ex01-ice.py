@@ -3,18 +3,21 @@
 import json
 from Icestudio import Ice, Size, Blocks, Graph
 
-#-- Open a json test file
-# with open("../Test-files/graph.ice") as f:
-#     graph_json = json.load(f)
-#     graph = Graph(**graph_json)
-
-# print(graph)
-
-# with open("../Test-files/blocks.ice") as f:
-#     blocks_json = json.load(f)
-#     blocks = Blocks(*blocks_json)
-# print(blocks)
-
 ice = Ice()
-ice.open_file("../Test-files/test-01-info.ice")
-print(ice)
+ice.open_file("../Test-files/test-02-info.ice")
+
+#-- Print info about the circuit
+print(f"* Version: {ice.version}")
+print(f"* Board: {ice.design.board}")
+print(f"* Blocks: {len(ice.design.graph.blocks.list)}")
+print(f"* Wires: {len(ice.design.graph.wires)}")
+
+print()
+
+#-- Show all the blocks with its types and ids
+blocks = ice.design.graph.blocks.list
+for block in blocks:
+    print(f"-{block.type} block")
+    print(f"  id: {block.id}")
+
+print()

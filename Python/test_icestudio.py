@@ -513,6 +513,13 @@ class TestIce(unittest.TestCase):
         #--TODO: Compare if object ice.design is equal to the empty one
         self.assertEqual(ice.dependencies, {})
 
+        #-- Check for invalid version
+        with self.assertRaises(AttributeError) as exc:
+            Ice(2)
+
+        self.assertEqual(str(exc.exception), 
+                         "Invalid version type (should be a string)")
+
 
     def test_Ice_str(self):
         """Test the str method"""
@@ -534,18 +541,17 @@ class TestIce(unittest.TestCase):
         #-- Open a json test file
         with open("../Test-files/test-01-info.ice") as f:
             ice_json = json.load(f)
-        #    ice = Ice(**ice_json)
+            ice = Ice(**ice_json)
 
-        #-- TODO
-        #self.assertEqual(ice.version, ice_json['version'])
-        #self.assertEqual(ice.package, ice_json['package'])
+        self.assertEqual(ice.version, ice_json['version'])
+        self.assertEqual(ice.package, ice_json['package'])
 
         
-        #self.assertIsInstance(ice.design, Design)
+        self.assertIsInstance(ice.design, Design)
         #-- TODO: Comparison: ice.design == ice_json['design']
         #self.assertEqual(ice.design, ice_json['design'])
 
-        #self.assertEqual(ice.dependencies, ice_json["dependencies"])
+        self.assertEqual(ice.dependencies, ice_json["dependencies"])
 
     def test_Ice_json(self):
         """Test json method"""

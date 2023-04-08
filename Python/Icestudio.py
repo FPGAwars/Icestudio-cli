@@ -355,7 +355,15 @@ class Ice:
                  design=Design(), 
                  dependencies={}) -> None:
         
-        self.version = version
+        #---- Version attribute
+        #-- Check version
+        if isinstance(version, str):
+            self.version = version
+
+        #-- Invalid version type (should be a string)
+        else:
+            raise AttributeError("Invalid version type (should be a string)")
+
         self.package = package
 
         #-- Design property
@@ -365,7 +373,7 @@ class Ice:
 
         #-- Check if have been defined as an Json object (dictionary)
         elif isinstance(design, dict):
-            self.design = Design(design)
+            self.design = Design(**design)
 
         #-- Unknown type for the design attribute
         else:
@@ -399,5 +407,5 @@ class Ice:
         #-- Initialize the class from the json object
         self.version = ice_json['version']
         self.package = ice_json['package']
-        self.design = Design(ice_json['design'])
+        self.design = Design(**ice_json['design'])
         self.dependencies = ice_json['dependencies']
