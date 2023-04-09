@@ -3,7 +3,7 @@
 import unittest
 import json
 from Icestudio import Size, DataInfo, Position, Block, Blocks, Graph
-from Icestudio import Design, Ice, Pin, Pins, DataPin, Port
+from Icestudio import Design, Ice, Pin, Pins, DataPin, Port, Range
 
 
 class TestSize(unittest.TestCase):
@@ -128,6 +128,36 @@ class TestPosition(unittest.TestCase):
         )    
 
 
+class TestRange(unittest.TestCase):
+
+    def test_Range(self):
+        """Test the constructor"""
+
+        r = Range(2)
+        self.assertEqual(r.max, 1)
+
+        r = Range("[1:0]")
+        self.assertEqual(r.max, 1)
+
+        #-- Check for invalid types
+        with self.assertRaises(AttributeError) as exc:
+            Range([2,0])
+
+        self.assertEqual(str(exc.exception), "Unknown type for max")
+
+        with self.assertRaises(AttributeError) as exc:
+            Range("hi")
+
+        self.assertEqual(str(exc.exception), "Invalid range format")
+
+
+    def test_Range_str(self):
+        """Test the str() method"""
+
+        r = Range(2)
+        self.assertEqual(str(r), "[1:0]")
+        
+
 class TestPort(unittest.TestCase):
 
     def test_Port(self):
@@ -136,7 +166,7 @@ class TestPort(unittest.TestCase):
         port = Port("out")
         self.assertEqual(port.name, "out")
 
-        #-- Chec, for invalid arguments
+        #-- Check, for invalid arguments
         with self.assertRaises(AttributeError) as exc:
             Port(3)
 

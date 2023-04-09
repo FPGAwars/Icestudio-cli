@@ -1,3 +1,4 @@
+import re
 import json
 
 class Size:
@@ -96,10 +97,60 @@ class Position:
         }
 
 
+class Range:
+    """Class for representing a verilog range (Ej. [3:0])"""
+
+    @staticmethod
+    def get_max(string: str) -> int:
+        """Get the max number from the string [max:0]"""
+
+        #-- Define the pattern
+        pattern = r"\[(\d+):0\]"
+        
+        #-- Check the string format
+        match = re.search(pattern, string)
+        
+        #-- Return the result
+        if match:
+
+            #-- Match ok
+            return int(match.group(1))
+        else:
+            #-- No match found
+            return None
+
+
+    def __init__(self, max=2) -> None:
+
+        #-- Property max --> [max:0]
+
+        #-- when it is defined by an int, its meaning is the
+        #-- total size of the range (max + 1)
+        if isinstance(max, int):
+            self.max = max - 1
+
+        elif isinstance(max, str):
+
+            #-- check the string format is [max:0]
+            #-- and get the max number
+            self.max = Range.get_max(max)
+
+            #-- If no max, the given string was not valid
+            if self.max == None:
+                raise AttributeError("Invalid range format")
+
+        else:
+            raise AttributeError("Unknown type for max")
+        
+    def __str__(self) -> str:
+        cad = f"[{self.max}:0]"
+        return cad
+
+
 class Port:
     """Class for representing a verilog port"""
 
-    def __init__(self, name="o") -> None:
+    def __init__(self, name="o", range=None) -> None:
 
         #----- name attribute
         if isinstance(name, str):
@@ -124,6 +175,8 @@ class Port:
 
         if isinstance(__value, Port):
             return self.name == __value.name
+
+
 
 
 
