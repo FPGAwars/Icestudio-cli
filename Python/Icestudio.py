@@ -158,7 +158,7 @@ class Range:
 class Port:
     """Class for representing a verilog port"""
 
-    def __init__(self, name="o", range=None) -> None:
+    def __init__(self, name="o", range=None, size=None) -> None:
 
         #----- name attribute
         if isinstance(name, str):
@@ -257,6 +257,22 @@ class Ports:
         list_json = [port.json() for port in self.list]
 
         return list_json
+    
+    def __eq__(self, __value: object) -> bool:
+
+        if isinstance(__value, Ports):
+
+            #-- Diferent number of ports
+            if len(self.list) != len(__value.list):
+                return False
+            
+            res = False
+            #-- Compare the ports, one by one
+            for i, j in zip(self.list, __value.list):
+                if i != j:
+                    return False
+            else:
+                return True
 
 
 class Pin:

@@ -205,6 +205,26 @@ class TestPorts(unittest.TestCase):
                          [{'name': 'a', 'range': '[1:0]', 'size': 2},
                           {'name': 'b'}
                          ])
+        
+    def test_Port_file(self):
+        """Test from json files"""
+
+        #-- Open a json test file
+        with open("../Test-files/ports.ice") as f:
+            ports_json = json.load(f)
+            ports = Ports(*ports_json)
+        #-- TODO ports.list == Ports(*pins_json)
+
+
+    def test_Ports_eq(self):
+        """Test === operator"""
+
+        ports1 = Ports(Port("a"), Port("b"))
+        ports2 = Ports(Port("a"), Port("b"))
+        self.assertEqual(ports1, ports2)
+
+        ports3 = Ports(Port("c"), Port("d"))
+        self.assertNotEqual(ports1, ports3)
 
 
 
