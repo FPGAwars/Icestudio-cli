@@ -3,7 +3,7 @@
 import unittest
 import json
 from Icestudio import Size, DataInfo, Position, Block, Blocks, Graph
-from Icestudio import Design, Ice, Pin, Pins, DataPin, Port, Range
+from Icestudio import Design, Ice, Pin, Pins, DataPin, Port, Range, Ports
 
 
 class TestSize(unittest.TestCase):
@@ -170,6 +170,44 @@ class TestRange(unittest.TestCase):
         self.assertNotEqual(r1, r3)
         
 
+class TestPorts(unittest.TestCase):
+    
+    def test_Ports(self):
+        """Test the constructor"""
+
+        ports = Ports(Port("a"), Port("b"))
+        self.assertEqual(ports.list, [Port("a"), Port("b")])
+
+        ports = Pins()
+        self.assertListEqual(ports.list, [])
+
+        #-- Check invalid arguments
+        #-- Invalid type
+        with self.assertRaises(AttributeError) as exc:
+            Ports(3)
+
+        self.assertEqual(str(exc.exception), 
+                        "Argument is not of port type")
+
+
+    def test_Ports_str(self):
+        """Test the str method"""
+
+        ports = Ports(Port("a"), Port("b"))
+        self.assertEqual(str(ports),
+                        "Ports[a,b]")
+        
+    def test_Ports_json(self):
+        """Test json method"""
+
+        ports = Ports(Port("a", 2), Port("b"))
+        self.assertEqual(ports.json(), 
+                         [{'name': 'a', 'range': '[1:0]', 'size': 2},
+                          {'name': 'b'}
+                         ])
+
+
+
 class TestPort(unittest.TestCase):
 
     def test_Port(self):
@@ -212,7 +250,7 @@ class TestPort(unittest.TestCase):
         """Test the str() method"""
 
         port = Port("out")
-        self.assertEqual(str(port), "Port(out)")
+        self.assertEqual(str(port), "out")
 
 
     def test_Port_json(self):

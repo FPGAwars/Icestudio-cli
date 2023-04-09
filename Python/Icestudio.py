@@ -189,10 +189,9 @@ class Port:
         
 
     def __str__(self) -> str:
-        cad = f"Port({self.name}"
-        if self.range != None:
+        cad = f"{self.name}"
+        if self.range:
             cad += f"{self.range}"
-        cad += ")"
         return cad
     
 
@@ -217,6 +216,47 @@ class Port:
         if isinstance(__value, Port):
             return self.name == __value.name
 
+
+class Ports:
+    """Class for representing a list of ports"""
+
+    def __init__(self, *ports) -> None:
+        self.list = list(ports)
+
+        #-- Empty list initially
+        self.list = []
+
+        for port in ports:
+            if isinstance(port, Port):
+                self.list.append(port)
+
+            #-- The port is given as a dicctionary (json)
+            elif isinstance(port, dict):
+                self.list.append(Port(**port))
+
+            else:
+                raise AttributeError("Argument is not of port type")
+            
+
+    def __str__(self) -> str:
+
+        #-- Create a list with the names of the ports
+        l = [str(port) for port in self.list]
+        l = ",".join(l)
+
+        cad = f"Ports[{l}]"
+        return cad
+    
+
+    def __repr__(self) -> str:
+        return str(self)
+    
+    def json(self):
+        """Return the class as a Json object"""
+
+        list_json = [port.json() for port in self.list]
+
+        return list_json
 
 
 class Pin:
