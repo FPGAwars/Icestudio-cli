@@ -300,6 +300,13 @@ class DataPin:
         cad += f"Virtual: {self.virtual}\n"
         cad += f"{self.pins}"
         return cad
+    
+    def json(self) -> dict:
+        return {
+            "name": self.name,
+            "virtual": self.virtual,
+            "pins": self.pins.json()
+        }
 
 
 class Block:

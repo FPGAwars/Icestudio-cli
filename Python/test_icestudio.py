@@ -349,6 +349,33 @@ class TestDataPin(unittest.TestCase):
                          "Virtual: False\n"
                          "Pins:")
         
+    def test_DataPin_json(self):
+        """Test the json method"""
+
+        data = DataPin("LED", False, Pins(Pin(), Pin()))
+        self.assertEqual(
+            data.json(), 
+            {
+            "name": "LED",
+            "virtual": False,
+            "pins": [
+                {'index': '0', 'name': 'NULL', 'value': 'NULL'},
+                {'index': '0', 'name': 'NULL', 'value': 'NULL'}
+            ]
+            }
+        )
+
+    def test_DataPin_file(self):
+        """Test DataPin from json files"""
+
+        #-- Open a json test file
+        with open("../Test-files/dataPin.ice") as f:
+            data = DataPin(**json.load(f))
+
+        self.assertEqual(data.name, "Led")
+        self.assertEqual(data.virtual, False)
+        self.assertEqual(data.pins, Pins(Pin("1", "N1", "V1")))
+        
     
 
 
