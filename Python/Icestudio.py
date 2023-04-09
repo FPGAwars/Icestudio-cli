@@ -275,6 +275,19 @@ class Ports:
                 return True
 
 
+class InOutPorts:
+    """All input and output ports of a verilog entity"""
+
+    def __init__(self, inp=Ports(), out=Ports()) -> None:
+        self.inp = inp
+        self.out = out
+
+    def __str__(self) -> str:
+        cad = f"In{self.inp}, "
+        cad += f"Out{self.out}"
+        return cad
+
+
 class Pin:
     """Class for representing one pin"""
 
