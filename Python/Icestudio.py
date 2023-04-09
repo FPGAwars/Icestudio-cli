@@ -195,20 +195,27 @@ class Port:
         cad += ")"
         return cad
     
+
     def __repr__(self) -> str:
         return (str(self))
     
+
     def json(self) -> dict:
-        return {
+        obj = {
             "name": self.name
         }
+
+        if self.range:
+            obj["range"] = str(self.range)
+            obj["size"] = self.range.size
+    
+        return obj
+    
     
     def __eq__(self, __value: object) -> bool:
 
         if isinstance(__value, Port):
             return self.name == __value.name
-
-
 
 
 

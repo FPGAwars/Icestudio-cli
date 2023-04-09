@@ -223,6 +223,14 @@ class TestPort(unittest.TestCase):
                          {
                            "name": "Hi"
                          })
+        
+        port = Port("Bye", 2)
+        self.assertEqual(port.json(), 
+                         {
+                           "name": "Bye",
+                           "range": "[1:0]",
+                           "size": 2 
+                         })
 
     def test_Port_eq(self):
         """Test the eq method"""
