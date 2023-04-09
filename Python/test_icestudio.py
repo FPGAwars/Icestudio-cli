@@ -375,7 +375,17 @@ class TestDataPin(unittest.TestCase):
         self.assertEqual(data.name, "Led")
         self.assertEqual(data.virtual, False)
         self.assertEqual(data.pins, Pins(Pin("1", "N1", "V1")))
-        
+
+
+    def test_DataPin_eq(self):
+        """Test operator =="""
+
+        datapin1 = DataPin("Led", True, Pins(Pin("1")))
+        datapin2 = DataPin("Led", True, Pins(Pin("1")))
+        self.assertEqual(datapin1, datapin2)
+
+        datapin3 = DataPin("Led2", False, Pins())
+        self.assertNotEqual(datapin1, datapin3)
     
 
 

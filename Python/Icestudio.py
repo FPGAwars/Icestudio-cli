@@ -259,7 +259,7 @@ class DataInfo:
             "info": self.info,
             "readonly": self.readonly
         }
-
+    
 
 class DataPin:
     """Class for representing the data part of the Pin blocks"""
@@ -307,6 +307,16 @@ class DataPin:
             "virtual": self.virtual,
             "pins": self.pins.json()
         }
+    
+
+    def __eq__(self, __value: object) -> bool:
+        """Compare two objects"""
+
+        if isinstance(__value, DataPin):
+            return (self.name == __value.name) and \
+                   (self.virtual == __value.virtual) and \
+                   (self.pins == __value.pins)
+
 
 
 class Block:
@@ -354,6 +364,8 @@ class Block:
 
                 else:
                     raise AttributeError("Unknow type for data")
+                
+            
 
             case _:
         
