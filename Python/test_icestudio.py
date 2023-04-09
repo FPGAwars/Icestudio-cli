@@ -3,7 +3,7 @@
 import unittest
 import json
 from Icestudio import Size, DataInfo, Position, Block, Blocks, Graph
-from Icestudio import Design, Ice, Pin, Pins, DataPin
+from Icestudio import Design, Ice, Pin, Pins, DataPin, Port
 
 
 class TestSize(unittest.TestCase):
@@ -127,6 +127,46 @@ class TestPosition(unittest.TestCase):
             {"x": 500, "y": 400}
         )    
 
+
+class TestPort(unittest.TestCase):
+
+    def test_Port(self):
+        """Test the constructor"""
+
+        port = Port("out")
+        self.assertEqual(port.name, "out")
+
+        #-- Chec, for invalid arguments
+        with self.assertRaises(AttributeError) as exc:
+            Port(3)
+
+        self.assertEqual(str(exc.exception), "name is not an String")
+
+    def test_Port_str(self):
+        """Test the str() method"""
+
+        port = Port("out")
+        self.assertEqual(str(port), "Port(out)")
+
+    def test_Port_json(self):
+        """Test the Json method"""
+
+        port = Port("Hi")
+        self.assertEqual(port.json(),
+                         {
+                           "name": "Hi"
+                         })
+
+    def test_Port_eq(self):
+        """Test the eq method"""
+
+        p1 = Port("Hi")
+        p2 = Port("Hi")
+        self.assertEqual(p1, p2)
+
+        p3 = Port("Dude!")
+        self.assertNotEqual(p1, p3)
+        
 
 class TestPin(unittest.TestCase):
 

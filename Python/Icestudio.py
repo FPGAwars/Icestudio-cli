@@ -96,6 +96,37 @@ class Position:
         }
 
 
+class Port:
+    """Class for representing a verilog port"""
+
+    def __init__(self, name="o") -> None:
+
+        #----- name attribute
+        if isinstance(name, str):
+            self.name = name
+
+        else:
+            raise AttributeError("name is not an String")
+        
+    def __str__(self) -> str:
+        cad = f"Port({self.name})"
+        return cad
+    
+    def __repr__(self) -> str:
+        return (str(self))
+    
+    def json(self) -> dict:
+        return {
+            "name": self.name
+        }
+    
+    def __eq__(self, __value: object) -> bool:
+
+        if isinstance(__value, Port):
+            return self.name == __value.name
+
+
+
 class Pin:
     """Class for representing one pin"""
 
