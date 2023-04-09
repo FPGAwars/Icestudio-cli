@@ -267,6 +267,7 @@ class DataPin:
     def __init__(self, 
                  name="", 
                  virtual=False, 
+                 range=None,
                  pins=Pins()) -> None:
 
         #-- Set the name attribute
@@ -283,6 +284,11 @@ class DataPin:
         else:
             raise AttributeError("virtual is not Boolean")
         
+        #-- Set the range attribute
+        if range != None:
+            if isinstance(range, str):
+                self.range = range
+
         #-- Set the pins attribute
         if isinstance(pins, Pins):
             self.pins = pins

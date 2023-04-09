@@ -335,7 +335,7 @@ class TestDataPin(unittest.TestCase):
 
         #-- Invalid pins property
         with self.assertRaises(AttributeError) as exc:
-            DataPin("Hi", False, 3)
+            DataPin("Hi", False, None, 3)
 
         self.assertEqual(str(exc.exception), "Invalid type for pins")
 
@@ -352,7 +352,7 @@ class TestDataPin(unittest.TestCase):
     def test_DataPin_json(self):
         """Test the json method"""
 
-        data = DataPin("LED", False, Pins(Pin(), Pin()))
+        data = DataPin("LED", False, None, Pins(Pin(), Pin()))
         self.assertEqual(
             data.json(), 
             {
