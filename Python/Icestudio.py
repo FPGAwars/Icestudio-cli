@@ -193,6 +193,23 @@ class Pins:
         list_json = [pin.json() for pin in self.list]
 
         return list_json
+    
+    def __eq__(self, __value: object) -> bool:
+
+        if isinstance(__value, Pins):
+
+            #-- Diferent number of pins
+            if len(self.list) != len(__value.list):
+                return False
+            
+            res = False
+            #-- Compare the pins, one by one
+            for i, j in zip(self.list, __value.list):
+                if i != j:
+                    return False
+            else:
+                return True
+            
         
 
 
@@ -242,6 +259,47 @@ class DataInfo:
             "info": self.info,
             "readonly": self.readonly
         }
+
+
+class DataPin:
+    """Class for representing the data part of the Pin blocks"""
+
+    def __init__(self, 
+                 name="", 
+                 virtual=False, 
+                 pins=Pins()) -> None:
+
+        #-- Set the name attribute
+        if isinstance(name, str):
+            self.name = name
+
+        else:
+            raise AttributeError("name is not a String")
+
+        #-- Set the virtual attribute
+        if isinstance(virtual, bool):
+            self.virtual = virtual
+
+        else:
+            raise AttributeError("virtual is not Boolean")
+        
+        #-- Set the pins attribute
+        if isinstance(pins, Pins):
+            self.pins = pins
+
+        elif isinstance(pins, list):
+            self.pins = Pins(*pins)
+
+        else:
+            raise AttributeError("Invalid type for pins")
+
+    def __str__(self) -> str:
+        """String representation"""
+
+        cad = f"Name: {self.name}\n"
+        cad += f"Virtual: {self.virtual}\n"
+        cad += f"{self.pins}"
+        return cad
 
 
 class Block:

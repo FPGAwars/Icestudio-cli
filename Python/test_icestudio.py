@@ -3,7 +3,7 @@
 import unittest
 import json
 from Icestudio import Size, DataInfo, Position, Block, Blocks, Graph
-from Icestudio import Design, Ice, Pin, Pins
+from Icestudio import Design, Ice, Pin, Pins, DataPin
 
 
 class TestSize(unittest.TestCase):
@@ -235,6 +235,16 @@ class TestPins(unittest.TestCase):
             pins = Pins(*pins_json)
         #-- TODO pins.list == Pins(*pins_json)
 
+    def test_Pins_eq(self):
+        """Test === operator"""
+
+        pins1 = Pins(Pin("0"), Pin("2"))
+        pins2 = Pins(Pin("0"), Pin("2"))
+        self.assertEqual(pins1, pins2)
+
+        pins3 = Pins(Pin("0"), Pin("3"))
+        self.assertNotEqual(pins1, pins3)
+
 
 
 class TestDataInfo(unittest.TestCase):
@@ -298,6 +308,48 @@ class TestDataInfo(unittest.TestCase):
         self.assertEqual(
             data.json(), 
             {"info": "Testing...", "readonly": True})
+
+
+class TestDataPin(unittest.TestCase):
+
+    def test_DataPin(self):
+        """Test the constructor"""
+
+        data = DataPin("LED", False, Pins(Pin(), Pin()))
+        self.assertEqual(data.name, "LED")
+        self.assertEqual(data.virtual, False)
+        #-- TODO
+        #self.assertEqual(data.pins, Pins(Pin(), Pin()))
+
+        #-- Creat DataPin with invalid type of name
+        with self.assertRaises(AttributeError) as exc:
+            DataPin(3)
+
+        self.assertEqual(str(exc.exception), "name is not a String")
+
+        #-- Invalid virtual property
+        with self.assertRaises(AttributeError) as exc:
+            DataPin("Hi", 3)
+
+        self.assertEqual(str(exc.exception), "virtual is not Boolean")
+
+        #-- Invalid pins property
+        with self.assertRaises(AttributeError) as exc:
+            DataPin("Hi", False, 3)
+
+        self.assertEqual(str(exc.exception), "Invalid type for pins")
+
+
+    def test_DataPin_str(self):
+        """Test the str method"""
+
+        data = DataPin("LED", False)
+        self.assertEqual(str(data), 
+                         "Name: LED\n"
+                         "Virtual: False\n"
+                         "Pins:")
+        
+    
 
 
 class TestBlock(unittest.TestCase):
