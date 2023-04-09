@@ -166,7 +166,17 @@ class TestPort(unittest.TestCase):
 
         p3 = Port("Dude!")
         self.assertNotEqual(p1, p3)
-        
+
+
+    def test_Port_file(self):
+        """Test from json files"""
+
+        #-- Open a json test file
+        with open("../Test-files/port1.ice") as f:
+             port = Port(**json.load(f))
+
+        self.assertEqual(port.name, "Hi!")
+
 
 class TestPin(unittest.TestCase):
 
