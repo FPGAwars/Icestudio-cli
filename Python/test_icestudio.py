@@ -158,6 +158,16 @@ class TestRange(unittest.TestCase):
 
         r = Range(2)
         self.assertEqual(str(r), "[1:0]")
+
+    def test_Range_eq(self):
+        """Test the == operator"""
+
+        r1 = Range(2)
+        r2 = Range(2)
+        self.assertEqual(r1, r2)
+
+        r3 = Range(3)
+        self.assertNotEqual(r1, r3)
         
 
 class TestPort(unittest.TestCase):
@@ -167,6 +177,24 @@ class TestPort(unittest.TestCase):
 
         port = Port("out")
         self.assertEqual(port.name, "out")
+        self.assertEqual(port.range, None)
+        self.assertEqual(port.size, None)
+
+        port = Port("Hi", 2)
+        self.assertEqual(port.name, "Hi")
+        self.assertEqual(port.range, Range(2))
+        self.assertEqual(port.size, 2)
+
+        port = Port("Dude!", "[2:0]")
+        self.assertEqual(port.name, "Dude!")
+        self.assertEqual(port.range, Range(3))
+        self.assertEqual(port.size, 3)
+
+        port = Port("Bye", "[3:0]")
+        self.assertEqual(port.name, "Bye")
+        self.assertEqual(port.range, Range(4))
+        self.assertEqual(port.size, 4)
+
 
         #-- Check, for invalid arguments
         with self.assertRaises(AttributeError) as exc:
@@ -174,11 +202,18 @@ class TestPort(unittest.TestCase):
 
         self.assertEqual(str(exc.exception), "name is not an String")
 
+        with self.assertRaises(AttributeError) as exc:
+            Port("Hi", [])
+
+        self.assertEqual(str(exc.exception), "Unknown type for max")
+
+
     def test_Port_str(self):
         """Test the str() method"""
 
         port = Port("out")
         self.assertEqual(str(port), "Port(out)")
+
 
     def test_Port_json(self):
         """Test the Json method"""

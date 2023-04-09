@@ -129,6 +129,7 @@ class Range:
         if isinstance(max, int):
             self.max = max - 1
 
+        #-- It can also be defined with a string "[max:0]"
         elif isinstance(max, str):
 
             #-- check the string format is [max:0]
@@ -150,6 +151,9 @@ class Range:
     def size(self):
         return self.max + 1
 
+    def __eq__(self, __value: object) -> bool:
+        return self.max == __value.max
+
 
 class Port:
     """Class for representing a verilog port"""
@@ -163,8 +167,32 @@ class Port:
         else:
             raise AttributeError("name is not an String")
         
+        #---- Range attribue
+        #-- None by default
+        self.range = None
+
+        #-- If given, check range types
+        if range != None:
+            if isinstance(range, Range):
+                self.range = range
+
+            else: 
+                self.range = Range(range)
+
+
+    @property
+    def size(self):
+        if not self.range:
+            return None
+        
+        return self.range.size
+        
+
     def __str__(self) -> str:
-        cad = f"Port({self.name})"
+        cad = f"Port({self.name}"
+        if self.range != None:
+            cad += f"{self.range}"
+        cad += ")"
         return cad
     
     def __repr__(self) -> str:
