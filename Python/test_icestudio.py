@@ -162,7 +162,23 @@ class TestPin(unittest.TestCase):
         self.assertEqual(str(pin), "Pin(0, Hi, Dude!)")
 
 
+    def test_eq(self):
+        """Test == operator"""
 
+        self.assertTrue(Pin() == Pin())
+        self.assertTrue(Pin("0","hola","1") == Pin("0", "hola", "1"))
+        self.assertFalse(Pin("1") == Pin("0"))
+
+    def test_Pin_file(self):
+        """Test Pin from json files"""
+
+        #-- Open a json test file
+        with open("../Test-files/pin.ice") as f:
+             pin = Pin(**json.load(f))
+
+        self.assertEqual(pin.index, "2")
+        self.assertEqual(pin.name, "Hi")
+        self.assertEqual(pin.value, "Dude!")
 
 
 

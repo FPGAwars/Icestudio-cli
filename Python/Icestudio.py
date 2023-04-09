@@ -102,7 +102,7 @@ class Pin:
     def __init__(self, 
                  index: str = "0", #-- Pin position in icestudio
                  name: str = "NULL",  #-- Pin name
-                 value: str = "NULL", #--- ¿?
+                 value: str = "NULL", #--- FPGA pin number
                  ) -> None:
         """Pin constructor"""
 
@@ -136,8 +136,42 @@ class Pin:
     
     def __repr__(self) -> str:
         return str(self)
+    
+    def json(self) -> dict:
+        return {
+            "index": self.index,
+            "name": self.name,
+            "value": self.value
+        }
+    
+    def __eq__(self, __value: object) -> bool:
 
-    #-- TODO: json method, __eq__ method
+        if isinstance(__value, Pin):
+            return (self.index == __value.index) and \
+                   (self.name == __value.name) and \
+                   (self.value == __value.value)
+
+
+class Pins:
+    """Class for representing a list of pins"""
+
+    def __init__(self, *pins) -> None:
+        self.list = list(pins)
+
+        #-- Empty list initially
+        self.list = []
+
+        for pin in pins:
+            if isinstance(pin, Pin):
+                self.list.append(pin)
+
+            #-- The pin is given as a dicctionary (json)
+            elif isinstance(pin, dict):
+                self.list.append(Pin(**pin))
+
+            else:
+                raise AttributeError("Argument is not of pin type")
+
 
 class DataInfo:
     """Class for representing the data part of the Info blocks"""
