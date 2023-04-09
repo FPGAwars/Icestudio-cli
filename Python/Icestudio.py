@@ -145,6 +145,10 @@ class Range:
     def __str__(self) -> str:
         cad = f"[{self.max}:0]"
         return cad
+    
+    @property
+    def size(self):
+        return self.max + 1
 
 
 class Port:

@@ -135,9 +135,11 @@ class TestRange(unittest.TestCase):
 
         r = Range(2)
         self.assertEqual(r.max, 1)
+        self.assertEqual(r.size, 2)
 
         r = Range("[1:0]")
         self.assertEqual(r.max, 1)
+        self.assertEqual(r.size, 2)
 
         #-- Check for invalid types
         with self.assertRaises(AttributeError) as exc:
