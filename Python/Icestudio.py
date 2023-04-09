@@ -171,6 +171,29 @@ class Pins:
 
             else:
                 raise AttributeError("Argument is not of pin type")
+            
+    def __str__(self) -> str:
+        cad = "Pins:"
+        for pin in self.list:
+            cad += '\n' + str(pin)
+        return cad
+    
+    def __repr__(self) -> str:
+         
+        #-- Create a list with the names of the pins
+        l = [pin.name for pin in self.list]
+        l = ",".join(l)
+
+        cad = f"Pins[{l}]"
+        return cad
+    
+    def json(self):
+        """Return the class as a Json object"""
+
+        list_json = [pin.json() for pin in self.list]
+
+        return list_json
+        
 
 
 class DataInfo:

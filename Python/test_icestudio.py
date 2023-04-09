@@ -3,7 +3,7 @@
 import unittest
 import json
 from Icestudio import Size, DataInfo, Position, Block, Blocks, Graph
-from Icestudio import Design, Ice, Pin
+from Icestudio import Design, Ice, Pin, Pins
 
 
 class TestSize(unittest.TestCase):
@@ -179,6 +179,61 @@ class TestPin(unittest.TestCase):
         self.assertEqual(pin.index, "2")
         self.assertEqual(pin.name, "Hi")
         self.assertEqual(pin.value, "Dude!")
+
+
+class TestPins(unittest.TestCase):
+
+    def test_Pins(self):
+        """Test the constructor"""
+
+        pin1 = Pin("0", "P0")
+        pin2 = Pin("1", "P1")
+        pins = Pins(pin1, pin2)
+        self.assertListEqual(pins.list, [pin1, pin2])
+
+        pins = Pins()
+        self.assertListEqual(pins.list, [])
+
+        #-- Check invalid arguments
+        #-- Invalid block type
+        with self.assertRaises(AttributeError) as exc:
+            Pins(3)
+
+        self.assertEqual(str(exc.exception), 
+                        "Argument is not of pin type")
+
+
+    def test_Pin_str(self):
+        """Test the str method"""
+
+        pin1 = Pin("0", "P0", "V0")
+        pin2 = Pin("1", "P1", "V1")
+        pins = Pins(pin1, pin2)
+        self.assertEqual(str(pins),
+                        "Pins:\n"
+                        "Pin(0, P0, V0)\n"
+                        "Pin(1, P1, V1)")
+
+
+    def test_Pin_json(self):
+        """Test json method"""
+
+        pin1 = Pin("0", "P0", "V0")
+        pin2 = Pin("1", "P1", "V1")
+        pins = Pins(pin1, pin2)
+        self.assertEqual(pins.json(), 
+                         [{'index': '0', 'name': 'P0', 'value': 'V0'},
+                          {'index': '1', 'name': 'P1', 'value': 'V1'}
+                         ])
+        
+    def test_Pins_file(self):
+        """Test Pins from json files"""
+
+        #-- Open a json test file
+        with open("../Test-files/pins.ice") as f:
+            pins_json = json.load(f)
+            pins = Pins(*pins_json)
+        #-- TODO pins.list == Pins(*pins_json)
 
 
 
