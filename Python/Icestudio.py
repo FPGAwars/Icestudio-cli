@@ -365,7 +365,17 @@ class Block:
                 else:
                     raise AttributeError("Unknow type for data")
                 
-            
+            case "basic.output":
+                #-- Check if it is a DataPin object
+                if isinstance(data, DataPin):
+                    self.data = data
+                
+                #-- check if it has been defined as a Json object (dictionary)
+                elif isinstance(data, dict):
+                    self.data = DataPin(**data)
+
+                else:
+                    raise AttributeError("Unknow type for data")
 
             case _:
         
