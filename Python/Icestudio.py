@@ -244,7 +244,7 @@ class Ports:
         l = [str(port) for port in self.list]
         l = ",".join(l)
 
-        cad = f"Ports[{l}]"
+        cad = f"Ports({l})"
         return cad
     
 
@@ -279,13 +279,47 @@ class InOutPorts:
     """All input and output ports of a verilog entity"""
 
     def __init__(self, inp=Ports(), out=Ports()) -> None:
-        self.inp = inp
-        self.out = out
+
+        #-- Inp property
+        if isinstance(inp, Ports):
+            self.inp = inp
+
+        elif isinstance(inp, list):
+            self.inp = Ports(*inp) 
+
+        else:
+            raise AttributeError("Unknown type for inports")
+        
+        #-- Out property
+        if isinstance(out, Ports):
+            self.out = out
+
+        elif isinstance(out, list):
+            self.out = Ports(*out)
+
+        else:
+            raise AttributeError("Unknown type for outports")
+
 
     def __str__(self) -> str:
         cad = f"In{self.inp}, "
         cad += f"Out{self.out}"
         return cad
+    
+    def __repr__(self) -> str:
+        return str(self)
+    
+    def json(self) -> dict:
+        return {
+            "in": self.inp.json(),
+            "out": self.out.json(),
+        }
+    
+    def __eq__(self, __value: object) -> bool:
+
+        if isinstance(__value, InOutPorts):
+            return (self.inp == __value.inp) and \
+                   (self.out == __value.out)
 
 
 class Pin:

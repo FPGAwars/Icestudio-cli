@@ -4,6 +4,7 @@ import unittest
 import json
 from Icestudio import Size, DataInfo, Position, Block, Blocks, Graph
 from Icestudio import Design, Ice, Pin, Pins, DataPin, Port, Range, Ports
+from Icestudio import InOutPorts
 
 
 class TestSize(unittest.TestCase):
@@ -195,7 +196,7 @@ class TestPorts(unittest.TestCase):
 
         ports = Ports(Port("a"), Port("b"))
         self.assertEqual(str(ports),
-                        "Ports[a,b]")
+                        "Ports(a,b)")
         
     def test_Ports_json(self):
         """Test json method"""
@@ -225,6 +226,95 @@ class TestPorts(unittest.TestCase):
 
         ports3 = Ports(Port("c"), Port("d"))
         self.assertNotEqual(ports1, ports3)
+
+
+class TestInOutPorts(unittest.TestCase):
+    
+    def test_InOutPorts(self):
+        """Test the constructor"""
+
+        ports1 = Ports(Port("a",2), Port("b"))
+        ports2 = Ports(Port("c"))
+        ioports = InOutPorts(ports1, ports2)
+        self.assertEqual(ioports.inp, ports1)
+        self.assertEqual(ioports.out, ports2)
+
+        #-- Check invalid types
+        with self.assertRaises(AttributeError) as exc:
+            InOutPorts(3)
+
+        self.assertEqual(str(exc.exception), "Unknown type for inports")
+
+        with self.assertRaises(AttributeError) as exc:
+            InOutPorts(ports1, 3)
+
+        self.assertEqual(str(exc.exception), "Unknown type for outports")
+
+
+    def test_InOutPorts_str(self):
+        """Test the str() method"""
+
+        ports1 = Ports(Port("a",2), Port("b"))
+        ports2 = Ports(Port("c"))
+        ioports = InOutPorts(ports1, ports2)
+        self.assertEqual(str(ioports), 
+                         "InPorts(a[1:0],b), OutPorts(c)")
+        
+        
+    def test_InOutPorts_json(self):
+        """Test the Json method"""
+
+        ports1 = Ports(Port("a",2), Port("b"))
+        ports2 = Ports(Port("c"))
+        ioports = InOutPorts(ports1, ports2)
+        self.assertEqual(
+            ioports.json(),
+            {
+                "in": [
+                    {
+                      "name": "a",
+                      "range": "[1:0]",
+                      "size": 2
+                    }, 
+                    {
+                      "name": "b"
+                    }
+                ],
+                "out": [
+                    { "name": "c"}
+                ]
+            })
+
+
+    def test_InOutPort_eq(self):
+        """Test the eq method"""
+
+        ports1 = Ports(Port("a",2), Port("b"))
+        ports2 = Ports(Port("c"))
+        ioports1 = InOutPorts(ports1, ports2)
+        ioports2 = InOutPorts(ports1, ports2)
+        self.assertEqual(ioports1, ioports2)
+
+        ports3 = Ports(Port("c"), Port("d"))
+        ioports3 = InOutPorts(ports1, ports3)
+        self.assertNotEqual(ioports1, ioports3)
+
+
+    def test_Port_file(self):
+        """Test from json files"""
+
+        #-- Open a json test file
+        with open("../Test-files/inoutports.ice") as f:
+            ioports_json = json.load(f)
+
+            #-- Cambiar la propiedad "in" por "inp"
+            ioports_json["inp"] = ioports_json.pop("in")
+            ioports = InOutPorts(**ioports_json)
+
+        inports = Ports(*ioports_json["inp"])
+        outports = Ports(*ioports_json["out"])
+
+        #self.assertEqual(ioports.inp, inports)
 
 
 
