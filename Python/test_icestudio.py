@@ -4,7 +4,7 @@ import unittest
 import json
 from Icestudio import Size, DataInfo, Position, Block, Blocks, Graph
 from Icestudio import Design, Ice, Pin, Pins, DataPin, Port, Range, Ports
-from Icestudio import InOutPorts
+from Icestudio import InOutPorts, DataCode
 
 
 class TestSize(unittest.TestCase):
@@ -519,6 +519,66 @@ class TestPins(unittest.TestCase):
         pins3 = Pins(Pin("0"), Pin("3"))
         self.assertNotEqual(pins1, pins3)
 
+
+class TestDataCode(unittest.TestCase):
+
+    def test_DataCode(self):
+        """Test the constructor"""
+
+        data = DataCode(InOutPorts())
+        self.assertEqual(data.ports, InOutPorts())
+        self.assertEqual(data.params, [])
+        self.assertEqual(data.code, "")
+
+        #-- Check for invalid parameter
+        with self.assertRaises(AttributeError) as exc:
+            DataCode(3)
+
+        self.assertEqual(str(exc.exception), "Unknown type for ports (ioports)")
+
+        with self.assertRaises(AttributeError) as exc:
+            DataCode(InOutPorts(), [], 3)
+
+        self.assertEqual(str(exc.exception), "code is not a String")
+
+
+    def test_DataCode_str(self):
+        """Test the str method"""
+
+        data = DataCode(InOutPorts(),[],"//-- Hi")
+        self.assertEqual(str(data), 
+                         "DataCode:\n"
+                         "* InPorts(), OutPorts()\n"
+                         "* Params: []\n"
+                         "* Code: //-- Hi")
+
+
+    def test_DataCode_json(self):
+        """Test json method"""
+
+        data = DataCode(InOutPorts(),[],"//-- Hi")
+
+        #-- Perform the test
+        self.assertEqual(
+            data.json(), 
+            {"ports": {'in': [], 'out': []},
+             "params": [],
+             "code": "//-- Hi"
+             })
+
+
+    def test_DataInfo_file(self):
+        """Test from json files"""
+
+        #-- Open a json test file
+        with open("../Test-files/dataCode.ice") as f:
+            data = DataCode(**json.load(f))
+
+        self.assertEqual(data.ports, 
+                         InOutPorts(Ports(), 
+                                    Ports(Port("o", 2))))
+        self.assertEqual(data.params, [])
+        self.assertEqual(data.code, "//-- Hi!")
 
 
 class TestDataInfo(unittest.TestCase):

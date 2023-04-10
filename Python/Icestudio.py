@@ -435,8 +435,71 @@ class Pins:
                     return False
             else:
                 return True
-            
+
+     
+class DataCode:
+    """Class for representing the data part of the Code blocks"""
+
+    def __init__(self, 
+                 ports=InOutPorts(),
+                 params=[],
+                 code:str=""
+                 ) -> None:
         
+        #--- ports Attribute (ioports)
+        if isinstance(ports, InOutPorts):
+            self.ports = ports
+
+        elif isinstance(ports, dict):
+
+            #-- Cambiar la propiedad "in" por "inp"
+            ports["inp"] = ports.pop("in")
+            self.ports = InOutPorts(**ports)
+
+        else:
+            raise AttributeError("Unknown type for ports (ioports)")
+
+        #--- params Attribute
+        self.params = params
+
+        #--- code attribute
+        if isinstance(code, str):
+            self.code = code
+
+        else:
+            raise AttributeError("code is not a String")
+    
+
+    def __str__(self) -> str:
+        """String representation"""
+
+        cad = "DataCode:\n"
+        cad += f"* {self.ports}\n"
+        cad += f"* Params: {self.params}\n"
+        cad += f"* Code: {self.code}"
+        return cad
+    
+    def __repr__(self) -> str:
+        return "DataCode(...)"
+    
+    def __eq__(self, __value: object) -> bool:
+        """Compare two objects"""
+
+        if isinstance(__value, DataCode):
+            return (self.ports == __value.ports) and \
+                   (self.params == __value.params) and \
+                   (self.code == __value.code)
+
+    
+    def json(self):
+        """Return the class as a Json object"""
+
+        return {
+            "ports": self.ports.json(),
+            "params": self.params,
+            "code": self.code
+        }
+
 
 
 class DataInfo:
