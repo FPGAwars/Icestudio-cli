@@ -314,7 +314,8 @@ class TestInOutPorts(unittest.TestCase):
         inports = Ports(*ioports_json["inp"])
         outports = Ports(*ioports_json["out"])
 
-        #self.assertEqual(ioports.inp, inports)
+        self.assertEqual(ioports.inp, inports)
+        self.assertEqual(ioports.out, outports)
 
 
 
