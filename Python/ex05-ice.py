@@ -4,7 +4,7 @@ import json
 from Icestudio import Ice, Size, Blocks, Graph
 
 ice = Ice()
-ice.open_file("../Test-files/test-06-output-pin.ice")
+ice.open_file("../Test-files/test-08-verilog.ice")
 
 #-- Print info about the circuit
 print(f"* Version: {ice.version}")

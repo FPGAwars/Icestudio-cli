@@ -637,7 +637,7 @@ class Block:
         if isinstance(type, str):
 
             #-- Check if the string represent a valid type
-            if type in ["basic.info", "basic.output"]:
+            if type in ["basic.info", "basic.output", "basic.code"]:
                 self.type = type
             else:
                 raise AttributeError("Unknow block type name")
@@ -668,6 +668,18 @@ class Block:
                 #-- check if it has been defined as a Json object (dictionary)
                 elif isinstance(data, dict):
                     self.data = DataPin(**data)
+
+                else:
+                    raise AttributeError("Unknow type for data")
+                
+            case "basic.code":
+                #-- Check if it is a DataCode object
+                if isinstance(data, DataCode):
+                    self.data = data
+                
+                #-- check if it has been defined as a Json object (dictionary)
+                elif isinstance(data, dict):
+                    self.data = DataCode(**data)
 
                 else:
                     raise AttributeError("Unknow type for data")
