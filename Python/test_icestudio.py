@@ -699,6 +699,21 @@ class TestDataPin(unittest.TestCase):
             }
         )
 
+        data = DataPin("LED", False, None, Pins(Pin(), Pin()), False)
+        self.assertEqual(
+            data.json(), 
+            {
+            "name": "LED",
+            "virtual": False,
+            "pins": [
+                {'index': '0', 'name': 'NULL', 'value': 'NULL'},
+                {'index': '0', 'name': 'NULL', 'value': 'NULL'}
+            ],
+            "clock": False
+            }
+        )
+
+
     def test_DataPin_file(self):
         """Test DataPin from json files"""
 
@@ -709,6 +724,14 @@ class TestDataPin(unittest.TestCase):
         self.assertEqual(data.name, "Led")
         self.assertEqual(data.virtual, False)
         self.assertEqual(data.pins, Pins(Pin("1", "N1", "V1")))
+
+        with open("../Test-files/dataPin2.ice") as f:
+            data = DataPin(**json.load(f))
+
+        self.assertEqual(data.name, "Boton")
+        self.assertEqual(data.virtual, False)
+        self.assertEqual(data.pins, Pins(Pin("0", "SW1", "34")))
+        self.assertEqual(data.clock, False)
 
 
     def test_DataPin_eq(self):

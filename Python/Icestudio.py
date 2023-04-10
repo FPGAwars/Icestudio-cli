@@ -557,7 +557,8 @@ class DataPin:
                  name="", 
                  virtual=False, 
                  range=None,
-                 pins=Pins()) -> None:
+                 pins=Pins(),
+                 clock=None) -> None:
 
         #-- Set the name attribute
         if isinstance(name, str):
@@ -588,20 +589,37 @@ class DataPin:
         else:
             raise AttributeError("Invalid type for pins")
 
+        #-- Set the clock attribute (only input pins)
+        if clock != None:
+            if isinstance(clock, bool):
+                self.clock = clock
+
+            else:
+                raise AttributeError("Invalid type for clock")
+
+
     def __str__(self) -> str:
         """String representation"""
 
         cad = f"Name: {self.name}\n"
         cad += f"Virtual: {self.virtual}\n"
         cad += f"{self.pins}"
+        if hasattr(self, "clock"):
+            cad += f"\nClock: {self.clock}"
         return cad
     
     def json(self) -> dict:
-        return {
+        obj = {
             "name": self.name,
             "virtual": self.virtual,
             "pins": self.pins.json()
         }
+
+        #-- Add the clock attribute (if it exists)
+        if hasattr(self, "clock"):
+            obj["clock"] = self.clock
+
+        return obj
     
 
     def __eq__(self, __value: object) -> bool:
@@ -637,7 +655,8 @@ class Block:
         if isinstance(type, str):
 
             #-- Check if the string represent a valid type
-            if type in ["basic.info", "basic.output", "basic.code"]:
+            if type in ["basic.info", "basic.output", "basic.code", 
+                        "basic.input"]:
                 self.type = type
             else:
                 raise AttributeError("Unknow block type name")
@@ -660,7 +679,7 @@ class Block:
                 else:
                     raise AttributeError("Unknow type for data")
                 
-            case "basic.output":
+            case "basic.output" | "basic.input":
                 #-- Check if it is a DataPin object
                 if isinstance(data, DataPin):
                     self.data = data
