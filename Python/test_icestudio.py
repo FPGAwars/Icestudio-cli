@@ -4,7 +4,7 @@ import unittest
 import json
 from Icestudio import Size, DataInfo, Position, Block, Blocks, Graph
 from Icestudio import Design, Ice, Pin, Pins, DataPin, Port, Range, Ports
-from Icestudio import InOutPorts, DataCode
+from Icestudio import InOutPorts, DataCode, EndPoint
 
 
 class TestSize(unittest.TestCase):
@@ -518,6 +518,74 @@ class TestPins(unittest.TestCase):
 
         pins3 = Pins(Pin("0"), Pin("3"))
         self.assertNotEqual(pins1, pins3)
+
+
+class TestEndPoint(unittest.TestCase):
+
+    def test_EndPoint(self):
+        """Test the constructor"""
+
+        endp = EndPoint()
+        self.assertEqual(endp.block, "")
+        self.assertEqual(endp.port, "")
+
+        endp = EndPoint("block1", "a")
+        self.assertEqual(endp.block, "block1")
+        self.assertEqual(endp.port, "a")
+
+        #--- Check for invalid parameter
+        with self.assertRaises(AttributeError) as exc:
+            EndPoint(3)
+
+        self.assertEqual(str(exc.exception), "block is not a String")
+
+        with self.assertRaises(AttributeError) as exc:
+            EndPoint("block1", 3)
+
+        self.assertEqual(str(exc.exception), "port is not a String")
+
+
+    def test_EndPoint_str(self):
+        """Test the str method"""
+
+        endp1 = EndPoint("block1", "a")
+        self.assertEqual(str(endp1), 
+                         "EndPoint(block1, a)")
+        
+    def test_EndPoint_eq(self):
+        """Test the eq method"""
+
+        endp1 = EndPoint("block1", "a")
+        endp2 = EndPoint("block1", "a")
+        self.assertEqual(endp1, endp2)
+
+        endp3 = EndPoint("block3", "c")
+        self.assertNotEqual(endp1, endp3)
+
+
+    def test_EndPoint_json(self):
+        """Test json method"""
+
+        endp = EndPoint("block1", "a")
+
+        #-- Perform the test
+        self.assertEqual(
+            endp.json(), 
+            {"block": "block1",
+             "port": "a"
+            })
+        
+
+    def test_EndPoint_file(self):
+        """Test from json files"""
+
+        #-- Open a json test file
+        with open("../Test-files/endpoint.ice") as f:
+            endp = EndPoint(**json.load(f))
+
+        self.assertEqual(endp, EndPoint("0766f96f", "out"))
+
+        
 
 
 class TestDataCode(unittest.TestCase):

@@ -436,6 +436,49 @@ class Pins:
             else:
                 return True
 
+
+class EndPoint:
+    """Connection Point"""
+
+    def __init__(self, block:str="", port:str="") -> None:
+        
+        #--- Block attribute: Block identifier
+        if isinstance(block, str):
+            self.block = block
+        else:
+            raise AttributeError("block is not a String")
+
+        #--- Port attribute: Port that is connected
+        if isinstance(port, str):
+            self.port = port
+        else:
+            raise AttributeError("port is not a String")
+
+
+    def __str__(self) -> str:
+        """String representation"""
+
+        cad = f"EndPoint({self.block}, {self.port})"
+        return cad
+    
+    def __repr__(self) -> str:
+        return str(self)
+    
+    def __eq__(self, __value: object) -> bool:
+        """Compare two objects"""
+
+        if isinstance(__value, EndPoint):
+            return (self.block == __value.block) and \
+                   (self.port == __value.port)
+        
+    def json(self):
+        """Return the class as a Json object"""
+
+        return {
+            "block": self.block,
+            "port": self.port
+        }
+
      
 class DataCode:
     """Class for representing the data part of the Code blocks"""
