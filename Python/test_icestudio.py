@@ -4,7 +4,7 @@ import unittest
 import json
 from Icestudio import Size, DataInfo, Position, Block, Blocks, Graph
 from Icestudio import Design, Ice, Pin, Pins, DataPin, Port, Range, Ports
-from Icestudio import InOutPorts, DataCode, EndPoint
+from Icestudio import InOutPorts, DataCode, EndPoint, Wire
 
 
 class TestSize(unittest.TestCase):
@@ -586,6 +586,58 @@ class TestEndPoint(unittest.TestCase):
         self.assertEqual(endp, EndPoint("0766f96f", "out"))
 
         
+class TestWire(unittest.TestCase):
+
+    def test_Wire(self):
+        """Test the constructor"""
+
+        wire = Wire()
+        self.assertEqual(wire.source, EndPoint())
+        self.assertEqual(wire.target, EndPoint())
+        self.assertEqual(wire.size, None)
+        
+
+        wire = Wire(EndPoint("b1","o1"), EndPoint("b2","i1"))
+        self.assertEqual(wire.source, EndPoint("b1","o1"))
+        self.assertEqual(wire.target, EndPoint("b2","i1"))
+        self.assertEqual(wire.size, None)
+
+        wire = Wire(EndPoint("b2","o1"), EndPoint("b3","i1"), 2)
+        self.assertEqual(wire.source, EndPoint("b2","o1"))
+        self.assertEqual(wire.target, EndPoint("b3","i1"))
+        self.assertEqual(wire.size, 2)
+
+        #-- Check for invalid arguments
+        with self.assertRaises(AttributeError) as exc:
+            Wire(3)
+
+        self.assertEqual(str(exc.exception), 
+                         "Unknown type for source EndPoint")
+        
+        with self.assertRaises(AttributeError) as exc:
+            Wire(EndPoint(), 3)
+
+        self.assertEqual(str(exc.exception), 
+                         "Unknown type for target EndPoint")
+        
+
+    def test_Wire_str(self):
+        """Test the str method"""
+
+        wire = Wire(EndPoint("b1","o1"), EndPoint("b2","i1"))
+        self.assertEqual(str(wire), 
+                         "Wire(EndPoint(b1, o1),"
+                              "EndPoint(b2, i1),1)")
+        
+    def test_Wire_eq(self):
+        """Test the == method"""
+
+        wire1 = Wire(EndPoint("b1","o1"), EndPoint("b2","i1"))
+        wire2 = Wire(EndPoint("b1","o1"), EndPoint("b2","i1"))
+        self.assertEqual(wire1, wire2)
+
+        wire3 = Wire()
+        self.assertNotEqual(wire1, wire3)
 
 
 class TestDataCode(unittest.TestCase):

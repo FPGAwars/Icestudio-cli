@@ -479,6 +479,76 @@ class EndPoint:
             "port": self.port
         }
 
+
+class Wire:
+    """Icestudio wire"""
+
+    def __init__(self, 
+                 source=EndPoint(), 
+                 target=EndPoint(), 
+                 size=None) -> None:
+
+        #-- A wire connects 2 Endpoints: from source to target
+        #-- The size property is the bus size. When the wire
+        #-- is only 1-bit, this property is NOT present
+
+        #-- Source property
+        if isinstance(source, EndPoint):
+            self.source = source
+        elif isinstance(source, dict):
+            self.source = EndPoint(**source)
+        else:
+            raise AttributeError("Unknown type for source EndPoint")
+        
+        #-- Target property
+        if isinstance(target, EndPoint):
+            self.target = target
+        elif isinstance(target, dict):
+            self.target = EndPoint(**target)
+        else:
+            raise AttributeError("Unknown type for target EndPoint")
+        
+        if isinstance(size,int) or size==None:
+            self.size = size
+        else:
+            raise AttributeError("Invalid size")
+
+
+    def __str__(self) -> str:
+        cad = f"Wire({self.source},{self.target}"
+        if self.size == None:
+            cad += ",1"
+        else:
+            cad += f",{self.size}"
+        cad += ")"
+        return cad
+    
+    def __repr__(self) -> str:
+        cad = "Wire(...)"
+        return cad
+    
+    def __eq__(self, __value: object) -> bool:
+        """Compare two objects"""
+
+        if isinstance(__value, Wire):
+            return (self.source == __value.source) and \
+                   (self.target == __value.target) and \
+                   (self.size == __value.size)
+        
+    def json(self):
+        """Return a json object"""
+
+        obj = {
+            "source": self.source.json(),
+            "target": self.target.json()
+        }
+
+        if self.size != None:
+            if self.size > 1:
+                obj["size"]= self.size
+
+        return obj
+
      
 class DataCode:
     """Class for representing the data part of the Code blocks"""
