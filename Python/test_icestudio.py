@@ -640,6 +640,42 @@ class TestWire(unittest.TestCase):
         self.assertNotEqual(wire1, wire3)
 
 
+    def test_Wire_json(self):
+        """Test json method"""
+
+        wire = Wire(EndPoint("b1","o1"), EndPoint("b2","i1"))
+
+        #-- Perform the test
+        self.assertEqual(wire.json(),
+            {
+              'source': {
+                'block': 'b1', 
+                'port': 'o1'
+              },
+              'target': {
+                'block': 'b2', 
+                'port': 'i1'
+              }
+            })
+        
+    def test_Wire_file(self):
+        """Test from json files"""
+
+        #-- Open a json test file
+        with open("../Test-files/wire.ice") as f:
+            wire = Wire(**json.load(f))
+
+        self.assertEqual(wire.source, 
+                         EndPoint("0766f96f-9f07-49b1-8c78-f24dce15cb5e",
+                                  "out"))
+        self.assertEqual(wire.target, 
+                         EndPoint("f2c3641d-ddfd-4a4b-a092-33b6f4bf838a",
+                                  "in"))
+        self.assertEqual(wire.size, 2)
+        
+        
+
+
 class TestDataCode(unittest.TestCase):
 
     def test_DataCode(self):
