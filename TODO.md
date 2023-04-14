@@ -1,5 +1,3 @@
-* Class Package
-* Class design: Propiedad board SOLO EN EL TOP
 * Class UserBlock
 * Class dependencies
 * Ejemplo: Constante de 1 bit (Subloques)

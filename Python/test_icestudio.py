@@ -1292,7 +1292,7 @@ class TestDesign(unittest.TestCase):
     def test_Design(self):
         """Test the constructor"""
 
-        design = Design()
+        design = Design("")
         self.assertEqual(design.board, "")
         #-- TODO
         #self.assertEqual(design.graph, {})
@@ -1313,7 +1313,7 @@ class TestDesign(unittest.TestCase):
     def test_Design_str(self):
         """Test the str method"""
 
-        design = Design()
+        design = Design("")
         self.assertEqual(str(design),
                          "* Design:\n"
                          "Board: \n"
@@ -1336,7 +1336,7 @@ class TestDesign(unittest.TestCase):
     def test_Design_json(self):
         """Test json method"""
 
-        design = Design()
+        design = Design("")
         self.assertEqual(design.json(), 
                          {'board': "", 
                           'graph': {'blocks': [], 'wires': []}
@@ -1371,10 +1371,21 @@ class TestIce(unittest.TestCase):
                          "Version: \n"
                          "Package: {}\n"
                          "Design: * Design:\n"
-                         "Board: \n"
                          "Graph: * Blocks: \n"
                          "* Wires: []\n\n\n"
                          "Dependencies: {}\n")
+        
+        ice = Ice(design=Design("alhambra-II"))
+        self.assertEqual(str(ice),
+                         "Version: \n"
+                         "Package: {}\n"
+                         "Design: * Design:\n"
+                         "Board: alhambra-II\n"
+                         "Graph: * Blocks: \n"
+                         "* Wires: []\n\n\n"
+                         "Dependencies: {}\n")
+
+
 
 
     def test_Ice_file(self):
@@ -1403,7 +1414,20 @@ class TestIce(unittest.TestCase):
                           {'version': "",
                            'package': {},
                            'design' : {
-                               'board': '',
+                               'graph': {
+                                    'blocks': [],
+                                    'wires': []
+                               }
+                           },
+                           'dependencies': {}
+                          })
+        
+        ice = Ice(design=Design("alhambra-ii"))
+        self.assertEqual(ice.json(), 
+                          {'version': "",
+                           'package': {},
+                           'design' : {
+                               'board': "alhambra-ii",
                                'graph': {
                                     'blocks': [],
                                     'wires': []

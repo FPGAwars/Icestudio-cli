@@ -1040,14 +1040,15 @@ class Graph:
 class Design:
     """Class for representing an Icestudio design"""
 
-    def __init__(self, board="", graph=Graph()) -> None:
+    def __init__(self, board=None, graph=Graph()) -> None:
 
         #--- Check board attribute
-        if (isinstance(board, str)):
-            self.board = board
+        if board != None:
+            if (isinstance(board, str)):
+                self.board = board
 
-        else:
-            raise AttributeError("board is not a string")
+            else:
+                raise AttributeError("board is not a string")
 
         #-- Check Graph attribute
         if isinstance(graph, Graph):
@@ -1063,15 +1064,20 @@ class Design:
 
     def __str__(self) -> str:
         cad = f"* Design:\n"
-        cad += f"Board: {self.board}\n"
+        if hasattr(self, "board"):
+            cad += f"Board: {self.board}\n"
         cad += f"Graph: {self.graph}\n"
         return cad
     
     def json(self) -> dict:
-        return {
-            "board": self.board,
+        obj = {
             "graph": self.graph.json()
         }
+        if hasattr(self, "board"):
+            obj['board'] = self.board
+
+        return obj
+
 
 class Ice:
     """Class for representing a full Icestudio circuit"""
