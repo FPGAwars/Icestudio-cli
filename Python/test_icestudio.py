@@ -2,10 +2,91 @@
 
 import unittest
 import json
-from Icestudio import Size, DataInfo, Position, Block, Blocks, Graph
-from Icestudio import Design, Ice, Pin, Pins, DataPin, Port, Range, Ports
-from Icestudio import InOutPorts, DataCode, EndPoint, Wire, Wires
+from Icestudio import \
+    Size, DataInfo, Position, Block, Blocks, Graph, Design, Ice, Pin, \
+    Pins, DataPin, Port, Range, Ports, InOutPorts, DataCode, EndPoint, \
+    Wire, Wires, Package
 
+class TestPackage(unittest.TestCase):
+
+    def test_Package(self):
+        """Test constructor"""
+
+        pack = Package("b1","1.0","hi!", "me", "svg")
+        self.assertEqual(pack.name, "b1")
+        self.assertEqual(pack.version, "1.0")
+        self.assertEqual(pack.description, "hi!")
+        self.assertEqual(pack.author, "me")
+        self.assertEqual(pack.image, "svg")
+
+        #-- Check for invalid arguments
+        with self.assertRaises(AttributeError) as exc:
+            Package(3)
+
+        self.assertEqual(str(exc.exception),"name is not an String")
+
+        with self.assertRaises(AttributeError) as exc:
+            Package("b1", 3)
+
+        self.assertEqual(str(exc.exception),"version is not an String")
+
+        with self.assertRaises(AttributeError) as exc:
+            Package("b1", "1.0", 3)
+
+        self.assertEqual(str(exc.exception),"description is not an String")
+
+        with self.assertRaises(AttributeError) as exc:
+            Package("b1", "1.0", "hi!", 3)
+
+        self.assertEqual(str(exc.exception),"author is not an String")
+
+        with self.assertRaises(AttributeError) as exc:
+            Package("b1", "1.0", "hi!", "me", 3)
+
+        self.assertEqual(str(exc.exception),"image is not an String")
+
+
+    def test_Package_str(self):
+        """Test str method"""
+
+        pack = Package("b1","1.0","hi!", "me", "svg")
+        self.assertEqual(str(pack), "Package(b1,1.0,hi!,me,svg)")
+
+
+    def test_Package_json(self):
+        """Test json method"""
+
+        #-- Perform the test
+        pack = Package("b1","1.0","hi!", "me", "svg")
+        self.assertEqual(
+            pack.json(), 
+            {"name": "b1", "version": "1.0", "description": "hi!",
+             "author": "me", "image": "svg"
+            }
+        )
+
+    def test_eq(self):
+        """Test == operator"""
+
+        pack1 = Package("b1","1.0","hi!", "me", "svg")
+        pack2 = Package()
+        self.assertTrue(pack1 == pack1)
+        self.assertFalse(pack1 == pack2)
+
+
+    def test_Package_file(self):
+        """Test from json files"""
+
+        #-- Open a json test file
+        with open("../Test-files/package.ice") as f:
+            pack = Package(**json.load(f))
+
+        self.assertEqual(pack.name, "bit1")
+        self.assertEqual(pack.version, "1.0")
+        self.assertEqual(pack.description, "cool")
+        self.assertEqual(pack.author, "obi")
+        self.assertEqual(pack.image, "svg") 
+        
 
 class TestSize(unittest.TestCase):
 

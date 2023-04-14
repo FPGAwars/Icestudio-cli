@@ -1,6 +1,81 @@
 import re
 import json
 
+class Package:
+    """Description of the design on the current level"""
+
+    def __init__(self, 
+                 name:str="", 
+                 version:str="",
+                 description:str="",
+                 author:str="",
+                 image:str="") -> None:
+        
+        #-- Set the name attribute
+        if isinstance(name, str):
+            self.name = name
+        else:
+            raise AttributeError("name is not an String")
+        
+        #-- Set the version attribute
+        if isinstance(version, str):
+            self.version = version
+        else:
+            raise AttributeError("version is not an String")
+        
+        #-- Set the description attribute
+        if isinstance(description, str):
+            self.description = description
+        else:
+            raise AttributeError("description is not an String")
+        
+        #-- Set the author attribute
+        if isinstance(author, str):
+            self.author = author
+        else:
+            raise AttributeError("author is not an String")
+        
+        #-- Set the image attribute
+        if isinstance(image, str):
+            self.image = image
+        else:
+            raise AttributeError("image is not an String")
+        
+
+    def __str__(self) -> str:
+        """String representation"""
+
+        cad = f"Package({self.name},{self.version},{self.description}," \
+              f"{self.author},{self.image})"
+        return cad
+    
+    def __repr__(self) -> str:
+        return str(self)
+    
+    def json(self):
+        """Return the class as a Json object"""
+    
+        return {
+            "name" : self.name,
+            "version": self.version,
+            "description": self.description,
+            "author": self.author,
+            "image": self.image
+        }
+    
+    def __eq__(self, __value: object) -> bool:
+        """Compare two Size objects"""
+
+        if isinstance(__value, Package):
+            return (self.name == __value.name) and \
+                   (self.version == __value.version) and \
+                   (self.description == __value.description) and \
+                   (self.author == __value.author) and \
+                   (self.image == __value.image)
+    
+    
+
+
 class Size:
     """Class for representing the size of an Icestudio block"""
 
