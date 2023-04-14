@@ -4,7 +4,7 @@ import json
 from Icestudio import Ice, Size, Blocks, Graph
 
 ice = Ice()
-ice.open_file("../Test-files/test-11-input-output.ice")
+ice.open_file("../Test-files/test-12-bit1.ice")
 
 #-- Print info about the circuit
 print(f"* Version: {ice.version}")

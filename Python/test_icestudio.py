@@ -1000,12 +1000,6 @@ class TestBlock(unittest.TestCase):
 
         self.assertEqual(str(exc.exception), "type is not a String")
 
-        with self.assertRaises(AttributeError) as exc:
-            #-- Invalid type name
-            Block("id1", "Hi")
-
-        self.assertEqual(str(exc.exception), "Unknow block type name")
-
         #-- Invalid data type
         with self.assertRaises(AttributeError) as exc:
             Block("id1", "basic.info", 5)

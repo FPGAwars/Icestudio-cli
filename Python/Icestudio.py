@@ -798,14 +798,7 @@ class Block:
         #--------- Type Attribute
         #-- Check if it is a valid string
         if isinstance(type, str):
-
-            #-- Check if the string represent a valid type
-            if type in ["basic.info", "basic.output", "basic.code", 
-                        "basic.input"]:
                 self.type = type
-            else:
-                raise AttributeError("Unknow block type name")
-
         else:
             raise AttributeError("type is not a String")
 
@@ -848,10 +841,12 @@ class Block:
                 else:
                     raise AttributeError("Unknow type for data")
 
+            #-- User block
             case _:
         
                 #-- Unknown type for the design attribute
-                raise AttributeError("Unsupported block type")
+                #raise AttributeError("Unsupported block type")
+                ...
 
 
         #------- Position property
