@@ -673,7 +673,9 @@ class DataCode:
         elif isinstance(ports, dict):
 
             #-- Cambiar la propiedad "in" por "inp"
-            ports["inp"] = ports.pop("in")
+            #-- si existe
+            if "in" in ports:
+                ports["inp"] = ports.pop("in")
             self.ports = InOutPorts(**ports)
 
         else:
@@ -971,7 +973,8 @@ class Block:
             "position": self.position.json(),
             "size": self.size.json()
         }
-    
+
+
 class Blocks:
     """Class for representing a list of icestudio blocks"""
     def __init__(self, *blocks) -> None:
@@ -1079,6 +1082,48 @@ class Design:
         return obj
 
 
+class UserBlock:
+    """Class for representing a User block"""
+
+    def __init__(self, 
+                 package=Package(), 
+                 design=Design()) -> None:
+        
+        #-- Check package attribute
+        if isinstance(package, Package):
+            self.package = package
+
+        elif isinstance(package, dict):
+            self.package = Package(**package)
+
+        else:
+            raise AttributeError("Unknown type for package")
+        
+        #-- Check design attribute
+        if isinstance(design, Design):
+            self.design = design
+
+        elif isinstance(design, dict):
+            self.design = Design(**design)
+
+        else:
+            raise AttributeError("Unknown type for design")
+
+
+    def __str__(self) -> str:
+        cad = f"Package: {self.package}\n"
+        cad += f"Design: {self.design}\n"
+        return cad
+    
+
+    def json(self) -> dict:
+        return {
+            "package": self.package.json(),
+            "design": self.design.json()
+        }
+
+
+
 class Ice:
     """Class for representing a full Icestudio circuit"""
 
@@ -1112,8 +1157,8 @@ class Ice:
         else:
             raise(AttributeError)
         
-
         self.dependencies = dependencies
+
 
     def __str__(self) -> str:
         cad = f"Version: {self.version}\n"

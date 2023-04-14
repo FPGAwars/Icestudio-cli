@@ -5,7 +5,7 @@ import json
 from Icestudio import \
     Size, DataInfo, Position, Block, Blocks, Graph, Design, Ice, Pin, \
     Pins, DataPin, Port, Range, Ports, InOutPorts, DataCode, EndPoint, \
-    Wire, Wires, Package
+    Wire, Wires, Package, UserBlock
 
 class TestPackage(unittest.TestCase):
 
@@ -1341,6 +1341,63 @@ class TestDesign(unittest.TestCase):
                          {'board': "", 
                           'graph': {'blocks': [], 'wires': []}
                           })
+
+
+class TestUserBlock(unittest.TestCase):
+
+    def test_UserBlock(self):
+        """Test the constructor"""
+        
+        user = UserBlock()
+        self.assertEqual(user.package, Package())
+        #self.assertEqual(user.design, Design())
+
+
+    def test_UserBlock_str(self):
+        """Test the str method"""
+
+        user = UserBlock()
+        self.assertEqual(str(user),
+                         "Package: Package(,,,,)\n"
+                         "Design: * Design:\n"
+                         "Graph: * Blocks: \n"
+                         "* Wires: []\n\n\n")
+
+
+    def test_UserBlock_json(self):
+        """Test json method"""
+
+        user = UserBlock()
+        self.assertEqual(user.json(), 
+            { 'package': {
+                'name': '', 
+                'version': '',
+                'description': '',
+                'author': '',
+                'image': ''},
+              'design': {
+                'graph': {
+                  'blocks': [], 
+                  'wires': []
+                }}
+            })
+
+
+    def test_Userblock_file(self):
+        """Test from json files"""
+
+        #-- Open a json test file
+        with open("../Test-files/userblock.ice") as f:
+            user_json = json.load(f)
+            user = UserBlock(**user_json)
+
+
+        self.assertEqual(user.package, 
+                         Package(**user_json['package']))
+        
+        #-- TODO: Comparison design == Design()
+        #self.assertEqual(user.design, 
+                         #Design(**user_json['design']))
 
 
 class TestIce(unittest.TestCase):

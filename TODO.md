@@ -1,4 +1,4 @@
-* Class UserBlock
+
 * Class dependencies
 * Ejemplo: Constante de 1 bit (Subloques)
 * Sustituir metodo .list por iterador en la propia clase
