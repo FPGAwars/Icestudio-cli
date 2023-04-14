@@ -4,7 +4,7 @@ import unittest
 import json
 from Icestudio import Size, DataInfo, Position, Block, Blocks, Graph
 from Icestudio import Design, Ice, Pin, Pins, DataPin, Port, Range, Ports
-from Icestudio import InOutPorts, DataCode, EndPoint, Wire
+from Icestudio import InOutPorts, DataCode, EndPoint, Wire, Wires
 
 
 class TestSize(unittest.TestCase):
@@ -674,6 +674,62 @@ class TestWire(unittest.TestCase):
         self.assertEqual(wire.size, 2)
         
         
+class TestWires(unittest.TestCase):
+
+    def test_Wires(self):
+        """Test the constructor"""
+
+        wire1 = Wire(EndPoint("b1","o"), EndPoint("b2","i"))
+        wire2 = Wire(EndPoint("a1","o"), EndPoint("a2", "o"))
+        wires = Wires(wire1, wire2)
+        self.assertListEqual(wires.list, [wire1, wire2])
+
+        wires = Wires()
+        self.assertListEqual(wires.list, [])
+
+        #-- Check invalid arguments
+        #-- Invalid wire type
+        with self.assertRaises(AttributeError) as exc:
+            Wires(3)
+
+        self.assertEqual(str(exc.exception), 
+                               "Argument is not of wire type")
+        
+
+    def test_Wiress_str(self):
+        """Test the str method"""
+
+        wire1 = Wire(EndPoint("b1","o"), EndPoint("b2","i"))
+        wire2 = Wire(EndPoint("a1","o"), EndPoint("a2", "o"))
+        wires = Wires(wire1, wire2)
+        self.assertEqual(str(wires),
+                         "Wire(EndPoint(b1, o),EndPoint(b2, i),1)\n"
+                         "Wire(EndPoint(a1, o),EndPoint(a2, o),1)")
+        
+
+    def test_Wiress_json(self):
+        """Test json method"""
+
+        wire1 = Wire(EndPoint("b1","o"), EndPoint("b2","i"))
+        wire2 = Wire(EndPoint("a1","o"), EndPoint("a2", "o"))
+        wires = Wires(wire1, wire2)
+        self.assertEqual(wires.json(), 
+          [
+            {'source': {'block': 'b1', 'port': 'o'}, 
+             'target': {'block': 'b2', 'port': 'i'}
+            }, 
+            {'source': {'block': 'a1', 'port': 'o'},
+             'target': {'block': 'a2', 'port': 'o'}}
+          ])
+        
+    def test_wires_file(self):
+        """Test Wires from json files"""
+
+        #-- Open a json test file
+        with open("../Test-files/wires.ice") as f:
+            wires_json = json.load(f)
+            wiress = Wires(*wires_json)
+        #-- TODO wires.list == Wires(*wires_json)
 
 
 class TestDataCode(unittest.TestCase):

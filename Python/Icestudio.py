@@ -549,6 +549,38 @@ class Wire:
 
         return obj
 
+
+class Wires:
+    """List of Icestudio wires"""
+
+    def __init__(self, *wires) -> None:
+
+        #-- Empty list initially
+        self.list = []
+
+        #-- Check that all the arguments are of type Wire
+        for wire in wires:
+            if isinstance(wire, Wire):
+                self.list.append(wire)
+
+            #-- The wire is given as a dicctionary (json)
+            elif isinstance(wire, dict):
+                self.list.append(Wire(**wire))
+
+            else:
+                raise AttributeError("Argument is not of wire type")
+
+    def __str__(self) -> str:
+        cad = "\n".join([str(wire) for wire in self.list])
+        return cad
+    
+    def json(self):
+        """Return the class as a Json object"""
+
+        list_json = [wire.json() for wire in self.list]
+
+        return list_json
+
      
 class DataCode:
     """Class for representing the data part of the Code blocks"""
