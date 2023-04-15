@@ -5,7 +5,7 @@ import json
 from Icestudio import \
     Size, DataInfo, Position, Block, Blocks, Graph, Design, Ice, Pin, \
     Pins, DataPin, Port, Range, Ports, InOutPorts, DataCode, EndPoint, \
-    Wire, Wires, Package, UserBlock
+    Wire, Wires, Package, UserBlock, dependencies
 
 class TestPackage(unittest.TestCase):
 
@@ -1398,6 +1398,76 @@ class TestUserBlock(unittest.TestCase):
         #-- TODO: Comparison design == Design()
         #self.assertEqual(user.design, 
                          #Design(**user_json['design']))
+
+
+class TestDependencies(unittest.TestCase):
+
+    def test_dependencies(self):
+        """Test the constructor"""
+
+        dep = dependencies()
+        self.assertEqual(dep.dict, {})
+
+        dep = dependencies({})
+        self.assertEqual(dep.dict, {})
+
+        dep = dependencies({"b1": UserBlock(),
+                            "b2": UserBlock()})
+        self.assertTrue("b1" in dep.dict)
+        self.assertTrue("b2" in dep.dict)
+
+
+    def test_dependencies_str(self):
+        """Test the str method"""
+
+        dep = dependencies({"b1": UserBlock(),
+                            "b2": UserBlock()})
+        self.assertEqual(str(dep),
+                         "b1->Package: Package(,,,,)\n"
+                         "Design: * Design:\n"
+                         "Graph: * Blocks: \n"
+                         "* Wires: []\n\n\n"
+                         "b2->Package: Package(,,,,)\n"
+                         "Design: * Design:\n"
+                         "Graph: * Blocks: \n"
+                         "* Wires: []\n\n\n")
+        
+    #-- TODO    
+    def test_UserBlock_json(self):
+        """Test json method"""
+
+        user = UserBlock()
+        self.assertEqual(user.json(), 
+            { 'package': {
+                'name': '', 
+                'version': '',
+                'description': '',
+                'author': '',
+                'image': ''},
+              'design': {
+                'graph': {
+                  'blocks': [], 
+                  'wires': []
+                }}
+            })
+
+    #-- TODO
+    def test_Userblock_file(self):
+        """Test from json files"""
+
+        #-- Open a json test file
+        with open("../Test-files/userblock.ice") as f:
+            user_json = json.load(f)
+            user = UserBlock(**user_json)
+
+
+        self.assertEqual(user.package, 
+                         Package(**user_json['package']))
+        
+        #-- TODO: Comparison design == Design()
+        #self.assertEqual(user.design, 
+                         #Design(**user_json['design']))
+
 
 
 class TestIce(unittest.TestCase):

@@ -1123,6 +1123,34 @@ class UserBlock:
         }
 
 
+class dependencies:
+    """Class for storing the user blocks"""
+    
+    def __init__(self, userblocks=None) -> None:
+        
+        #-- Check the userblock parameter
+        if userblocks == None:
+            #-- Create an empty dicctionary
+            self.dict = {}
+
+        elif isinstance(userblocks, dict):
+
+            #-- Add a copy of the dicctionary
+            self.dict = dict(userblocks)
+
+        else:
+            raise AttributeError("Invalid type for userblocks parameter")
+        
+    def __str__(self) -> str:
+        cad = "".join([f"{key}->{self.dict[key]}" for key in self.dict])
+        return cad
+    
+    def json(self):
+        obj = {}
+        for key in self.dict:
+            obj[key] = self.dict[key].json()
+        return obj
+
 
 class Ice:
     """Class for representing a full Icestudio circuit"""
