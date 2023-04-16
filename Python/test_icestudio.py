@@ -1197,13 +1197,11 @@ class TestBlocks(unittest.TestCase):
         blocks = Blocks(block1, block2)
         self.assertEqual(str(blocks),
                         "id: id1\n"
-                        "Type: basic.info\n"
-                        "Data: Info: \nReadonly: True\n\n"
+                        "Type: \n"
                         "Pos: Pos(0, 0)\n"
                         "Size: Size(0, 0)\n\n"
                         "id: id2\n"
-                        "Type: basic.info\n"
-                        "Data: Info: \nReadonly: True\n\n"
+                        "Type: \n"
                         "Pos: Pos(0, 0)\n"
                         "Size: Size(0, 0)\n")
 
@@ -1224,12 +1222,10 @@ class TestBlocks(unittest.TestCase):
         blocks = Blocks(block1, block2)
         
         self.assertEqual(blocks.json(), 
-                         [{'id': 'id1', 'type': 'basic.info', 
-                           'data': {'info': '', 'readonly': True}, 
+                         [{'id': 'id1', 'type': '', 
                            'position': {'x': 0, 'y': 0},
                            'size': {'width': 0, 'height': 0}}, 
-                         {'id': 'id2', 'type': 'basic.info', 
-                          'data': {'info': '', 'readonly': True}, 
+                         {'id': 'id2', 'type': '',  
                           'position': {'x':0, 'y':0}, 
                           'size': {'width': 0, 'height': 0}}])
 

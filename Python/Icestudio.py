@@ -858,8 +858,8 @@ class Block:
     """Class for representing an Icestudio block"""
     def __init__(self, 
                  id="", 
-                 type="basic.info",
-                 data=DataInfo(),
+                 type="",
+                 data=None,
                  position=Position(),
                  size=Size()) -> None:
         
@@ -958,7 +958,8 @@ class Block:
 
         cad = f"id: {self.id}\n"
         cad += f"Type: {self.type}\n"
-        cad += f"Data: {self.data}\n"
+        if hasattr(self, "data"):
+            cad += f"Data: {self.data}\n"
         cad += f"Pos: {self.position}\n"
         cad += f"Size: {self.size}\n"
         return cad
@@ -966,13 +967,17 @@ class Block:
     def json(self):
         """Return the class as a Json object"""
 
-        return {
+        obj = {
             "id": self.id,
             "type": self.type,
-            "data": self.data.json(),
             "position": self.position.json(),
             "size": self.size.json()
         }
+
+        if hasattr(self, "data"):
+            obj['data'] = self.data.json()
+
+        return obj
 
 
 class Blocks:
@@ -1135,8 +1140,21 @@ class Dependencies:
 
         elif isinstance(userblocks, dict):
 
-            #-- Add a copy of the dicctionary
-            self.dict = dict(userblocks)
+            #-- Empty dictrionary
+            self.dict = {}
+
+            #-- Copy the user blocks to the dicctionary
+            for ublock in userblocks:
+
+                value = userblocks[ublock]
+
+                #-- Class UserBlock
+                if isinstance(value, UserBlock):
+                    self.dict[ublock] = value
+
+                #-- It is a dicctionary
+                elif isinstance(value, dict):
+                  self.dict[ublock]=UserBlock(**value)
 
         else:
             raise AttributeError("Invalid type for userblocks parameter")
@@ -1235,4 +1253,4 @@ class Ice:
         self.version = ice_json['version']
         self.package = ice_json['package']
         self.design = Design(**ice_json['design'])
-        self.dependencies = ice_json['dependencies']
+        self.dependencies = Dependencies(ice_json['dependencies'])
