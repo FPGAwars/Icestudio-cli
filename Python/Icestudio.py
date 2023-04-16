@@ -777,10 +777,11 @@ class DataPin:
 
     def __init__(self, 
                  name="", 
-                 virtual=False, 
+                 virtual=None, 
                  range=None,
-                 pins=Pins(),
-                 clock=None) -> None:
+                 pins=None,
+                 clock=None,
+                 size=None) -> None:
 
         #-- Set the name attribute
         if isinstance(name, str):
@@ -789,27 +790,36 @@ class DataPin:
         else:
             raise AttributeError("name is not a String")
 
-        #-- Set the virtual attribute
-        if isinstance(virtual, bool):
-            self.virtual = virtual
+        #-- Set the virtual attribute, if given
+        if virtual != None:
+            if isinstance(virtual, bool):
+                self.virtual = virtual
 
+            else:
+                raise AttributeError("virtual is not Boolean")
+            
+        #-- It is an optional property
         else:
-            raise AttributeError("virtual is not Boolean")
-        
-        #-- Set the range attribute
+            self.virutal = None
+
+        #-- If given, check range types
         if range != None:
-            if isinstance(range, str):
+            if isinstance(range, Range):
                 self.range = range
 
-        #-- Set the pins attribute
-        if isinstance(pins, Pins):
-            self.pins = pins
+            else: 
+                self.range = Range(range)
 
-        elif isinstance(pins, list):
-            self.pins = Pins(*pins)
+        #-- If given, Set the pins attribute
+        if pins != None:
+            if isinstance(pins, Pins):
+                self.pins = pins
 
-        else:
-            raise AttributeError("Invalid type for pins")
+            elif isinstance(pins, list):
+                self.pins = Pins(*pins)
+
+            else:
+                raise AttributeError("Invalid type for pins")
 
         #-- Set the clock attribute (only input pins)
         if clock != None:
@@ -818,28 +828,58 @@ class DataPin:
 
             else:
                 raise AttributeError("Invalid type for clock")
+            
+
+            
+    @property
+    def size(self):
+        if not hasattr(self, "range"):
+            return None
+        
+        return self.range.size
 
 
     def __str__(self) -> str:
         """String representation"""
 
         cad = f"Name: {self.name}\n"
-        cad += f"Virtual: {self.virtual}\n"
-        cad += f"{self.pins}"
+
+        if hasattr(self, "range"):
+            cad += f"Range: {self.range}\n"
+            cad += f"Size: {self.range.size}\n"
+
+        if hasattr(self, "virtual"):
+            cad += f"Virtual: {self.virtual}\n"
+
+        if hasattr(self, "pins"):
+            cad += f"{self.pins}"
+
         if hasattr(self, "clock"):
             cad += f"\nClock: {self.clock}"
+
         return cad
     
     def json(self) -> dict:
         obj = {
-            "name": self.name,
-            "virtual": self.virtual,
-            "pins": self.pins.json()
+            "name": self.name
         }
+
+        if hasattr(self, "pins"):
+            obj["pins"] = self.pins.json()
+
+        if hasattr(self, "range"):
+            obj["range"] = str(self.range)
+
+        #-- Add the virtual attribute (if it exists)
+        if hasattr(self, "virtual"):
+            obj["virtual"] = self.virtual
 
         #-- Add the clock attribute (if it exists)
         if hasattr(self, "clock"):
             obj["clock"] = self.clock
+
+        if self.size != None:
+            obj["size"] = self.size
 
         return obj
     

@@ -942,7 +942,7 @@ class TestDataPin(unittest.TestCase):
     def test_DataPin(self):
         """Test the constructor"""
 
-        data = DataPin("LED", False, Pins(Pin(), Pin()))
+        data = DataPin("LED", False, pins=Pins(Pin(), Pin()))
         self.assertEqual(data.name, "LED")
         self.assertEqual(data.virtual, False)
         #-- TODO
@@ -973,8 +973,7 @@ class TestDataPin(unittest.TestCase):
         data = DataPin("LED", False)
         self.assertEqual(str(data), 
                          "Name: LED\n"
-                         "Virtual: False\n"
-                         "Pins:")
+                         "Virtual: False\n")
         
     def test_DataPin_json(self):
         """Test the json method"""
@@ -1030,11 +1029,11 @@ class TestDataPin(unittest.TestCase):
     def test_DataPin_eq(self):
         """Test operator =="""
 
-        datapin1 = DataPin("Led", True, Pins(Pin("1")))
-        datapin2 = DataPin("Led", True, Pins(Pin("1")))
+        datapin1 = DataPin("Led", True, pins=Pins(Pin("1")))
+        datapin2 = DataPin("Led", True, pins=Pins(Pin("1")))
         self.assertEqual(datapin1, datapin2)
 
-        datapin3 = DataPin("Led2", False, Pins())
+        datapin3 = DataPin("Led2", False, pins=Pins())
         self.assertNotEqual(datapin1, datapin3)
     
 

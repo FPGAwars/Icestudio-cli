@@ -7,13 +7,14 @@ def is_basic_block(type):
 
 
 #-- The first argument is the .ice circuit to analyze
-if ( len(sys.argv) < 2 ):
-    print("No icestudio file")
-    print("Usage: ex08-ice.py icestudio-file")
-    print()
-    sys.exit()
+# if ( len(sys.argv) < 2 ):
+#     print("No icestudio file")
+#     print("Usage: ex08-ice.py icestudio-file")
+#     print()
+#     sys.exit()
 
-file = sys.argv[1]
+#file = sys.argv[1]
+file = "../Test-files/temp.ice"
 
 #-- Read the file
 ice = Ice()
