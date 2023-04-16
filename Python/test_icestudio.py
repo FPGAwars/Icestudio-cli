@@ -1025,6 +1025,15 @@ class TestDataPin(unittest.TestCase):
         self.assertEqual(data.pins, Pins(Pin("0", "SW1", "34")))
         self.assertEqual(data.clock, False)
 
+        with open("../Test-files/dataPin3.ice") as f:
+            data = DataPin(**json.load(f))
+
+        self.assertEqual(data.name, "")
+        self.assertFalse(hasattr(data, "pins"))
+        self.assertFalse(hasattr(data, "virtual"))
+        self.assertEqual(data.size, 2)
+
+
 
     def test_DataPin_eq(self):
         """Test operator =="""
