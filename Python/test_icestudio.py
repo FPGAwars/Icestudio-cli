@@ -5,7 +5,7 @@ import json
 from Icestudio import \
     Size, DataInfo, Position, Block, Blocks, Graph, Design, Ice, Pin, \
     Pins, DataPin, Port, Range, Ports, InOutPorts, DataCode, EndPoint, \
-    Wire, Wires, Package, UserBlock, dependencies
+    Wire, Wires, Package, UserBlock, Dependencies
 
 class TestPackage(unittest.TestCase):
 
@@ -1405,13 +1405,13 @@ class TestDependencies(unittest.TestCase):
     def test_dependencies(self):
         """Test the constructor"""
 
-        dep = dependencies()
+        dep = Dependencies()
         self.assertEqual(dep.dict, {})
 
-        dep = dependencies({})
+        dep = Dependencies({})
         self.assertEqual(dep.dict, {})
 
-        dep = dependencies({"b1": UserBlock(),
+        dep = Dependencies({"b1": UserBlock(),
                             "b2": UserBlock()})
         self.assertTrue("b1" in dep.dict)
         self.assertTrue("b2" in dep.dict)
@@ -1420,7 +1420,7 @@ class TestDependencies(unittest.TestCase):
     def test_dependencies_str(self):
         """Test the str method"""
 
-        dep = dependencies({"b1": UserBlock(),
+        dep = Dependencies({"b1": UserBlock(),
                             "b2": UserBlock()})
         self.assertEqual(str(dep),
                          "b1->Package: Package(,,,,)\n"
@@ -1431,43 +1431,53 @@ class TestDependencies(unittest.TestCase):
                          "Design: * Design:\n"
                          "Graph: * Blocks: \n"
                          "* Wires: []\n\n\n")
-        
-    #-- TODO    
-    def test_UserBlock_json(self):
+           
+    def test_Dependencies_json(self):
         """Test json method"""
 
-        user = UserBlock()
-        self.assertEqual(user.json(), 
-            { 'package': {
-                'name': '', 
-                'version': '',
-                'description': '',
-                'author': '',
-                'image': ''},
-              'design': {
-                'graph': {
-                  'blocks': [], 
-                  'wires': []
-                }}
+        dep = Dependencies({"b1": UserBlock(),
+                            "b2": UserBlock()})
+        self.assertEqual(dep.json(), 
+            {'b1': 
+                {'package': 
+                    {'name': '', 
+                    'version': '', 
+                    'description': '', 
+                    'author': '', 
+                    'image': ''
+                    }, 
+                'design': 
+                    {'graph': 
+                        {'blocks': [], 'wires': []}
+                    }
+                }, 
+            'b2': 
+                {'package': 
+                    {'name': '',
+                     'version': '',
+                     'description': '',
+                     'author': '',
+                     'image': ''}, 
+                'design': 
+                    {'graph': 
+                        {'blocks': [], 
+                         'wires': []
+                        }
+                    }
+                }
             })
 
-    #-- TODO
-    def test_Userblock_file(self):
+
+    def test_Dependencies_file(self):
         """Test from json files"""
 
         #-- Open a json test file
-        with open("../Test-files/userblock.ice") as f:
-            user_json = json.load(f)
-            user = UserBlock(**user_json)
+        with open("../Test-files/dependencies.ice") as f:
+            dep_json = json.load(f)
+            dep = Dependencies(dep_json)
 
-
-        self.assertEqual(user.package, 
-                         Package(**user_json['package']))
-        
-        #-- TODO: Comparison design == Design()
-        #self.assertEqual(user.design, 
-                         #Design(**user_json['design']))
-
+        bid = "febcfed8636b8ee9a98750b96ed9e53a165dd4a8"
+        #-- TODO: Comparison dp = Dependencies()
 
 
 class TestIce(unittest.TestCase):

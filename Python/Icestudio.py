@@ -1123,7 +1123,7 @@ class UserBlock:
         }
 
 
-class dependencies:
+class Dependencies:
     """Class for storing the user blocks"""
     
     def __init__(self, userblocks=None) -> None:
