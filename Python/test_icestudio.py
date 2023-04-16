@@ -1487,10 +1487,10 @@ class TestIce(unittest.TestCase):
 
         ice = Ice()
         self.assertEqual(ice.version, "")
-        self.assertEqual(ice.package, {})
+        self.assertEqual(ice.package, Package())
         self.assertIsInstance(ice.design, Design)
-        #--TODO: Compare if object ice.design is equal to the empty one
-        self.assertEqual(ice.dependencies, {})
+        #--TODO: Compare if object ice.dependencies is equal to the empty one
+        #self.assertEqual(ice.dependencies, Dependencies())
 
         #-- Check for invalid version
         with self.assertRaises(AttributeError) as exc:
@@ -1506,21 +1506,21 @@ class TestIce(unittest.TestCase):
         ice = Ice()
         self.assertEqual(str(ice),
                          "Version: \n"
-                         "Package: {}\n"
+                         "Package: Package(,,,,)\n"
                          "Design: * Design:\n"
                          "Graph: * Blocks: \n"
                          "* Wires: []\n\n\n"
-                         "Dependencies: {}\n")
+                         "Dependencies: \n")
         
         ice = Ice(design=Design("alhambra-II"))
         self.assertEqual(str(ice),
                          "Version: \n"
-                         "Package: {}\n"
+                         "Package: Package(,,,,)\n"
                          "Design: * Design:\n"
                          "Board: alhambra-II\n"
                          "Graph: * Blocks: \n"
                          "* Wires: []\n\n\n"
-                         "Dependencies: {}\n")
+                         "Dependencies: \n")
 
 
 
@@ -1547,31 +1547,39 @@ class TestIce(unittest.TestCase):
         """Test json method"""
 
         ice = Ice()
-        self.assertEqual(ice.json(), 
-                          {'version': "",
-                           'package': {},
-                           'design' : {
-                               'graph': {
-                                    'blocks': [],
-                                    'wires': []
-                               }
-                           },
-                           'dependencies': {}
-                          })
+        self.assertEqual(ice.json(),
+            {'version': '', 
+             'package': 
+                {'name': '', 
+                 'version': '', 
+                 'description': '', 
+                 'author': '', 
+                 'image': ''
+                }, 
+            'design': 
+                {'graph': 
+                    {'blocks': [], 
+                    'wires': []}
+                }, 
+                'dependencies': {}})
+
         
         ice = Ice(design=Design("alhambra-ii"))
         self.assertEqual(ice.json(), 
-                          {'version': "",
-                           'package': {},
-                           'design' : {
-                               'board': "alhambra-ii",
-                               'graph': {
-                                    'blocks': [],
-                                    'wires': []
-                               }
-                           },
-                           'dependencies': {}
-                          })
+            {'version': '', 
+             'package': 
+                {'name': '', 
+                 'version': '', 
+                 'description': '', 
+                 'author': '', 
+                 'image': ''
+                }, 
+            'design': 
+                {'graph': 
+                    {'blocks': [], 'wires': []}, 
+                     'board': 'alhambra-ii'
+                }, 
+            'dependencies': {}})
 
 
 if __name__ == '__main__':

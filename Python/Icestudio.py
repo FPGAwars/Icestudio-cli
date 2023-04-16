@@ -1157,9 +1157,9 @@ class Ice:
 
     def __init__(self, 
                  version: str="", 
-                 package={}, 
+                 package=Package(), 
                  design=Design(), 
-                 dependencies={}) -> None:
+                 dependencies=Dependencies()) -> None:
         
         #---- Version attribute
         #-- Check version
@@ -1169,6 +1169,9 @@ class Ice:
         #-- Invalid version type (should be a string)
         else:
             raise AttributeError("Invalid version type (should be a string)")
+
+        #---- Package attribute
+        #-- TODO
 
         self.package = package
 
@@ -1198,9 +1201,9 @@ class Ice:
     def json(self) -> dict:
         return {
             "version": self.version,
-            "package": self.package,
+            "package": self.package.json(),
             "design": self.design.json(),
-            "dependencies": self.dependencies
+            "dependencies": self.dependencies.json()
         }
     
     def open_file(self, file) -> None:
