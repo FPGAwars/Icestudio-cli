@@ -1171,9 +1171,16 @@ class Ice:
             raise AttributeError("Invalid version type (should be a string)")
 
         #---- Package attribute
-        #-- TODO
+        if isinstance(package,Package):
+            self.package = package
 
-        self.package = package
+        #-- Check if have been defined as an Json object (dictionary)
+        elif isinstance(package, dict):
+            self.package = Package(**package)
+
+        #-- Invalid package type
+        else:
+            raise AttributeError("Invalid package type")
 
         #-- Design property
         #-- Check if it is a Design object
@@ -1186,9 +1193,20 @@ class Ice:
 
         #-- Unknown type for the design attribute
         else:
-            raise(AttributeError)
+            raise AttributeError("Invalid design type")
         
-        self.dependencies = dependencies
+        #-- Dependencies property
+        #-- Check if it is a Dependencies object
+        if isinstance(dependencies, Dependencies):
+            self.dependencies = dependencies
+
+        #-- Check if it has been defined as an Json object (dictionary)
+        elif isinstance(dependencies, dict):
+            self.dependencies = Dependencies(dependencies)
+
+        #-- Unknown type for the Dependencies object
+        else:
+            raise AttributeError("Invalid dependencies type")
 
 
     def __str__(self) -> str:

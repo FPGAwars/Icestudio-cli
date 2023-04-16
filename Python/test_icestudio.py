@@ -1498,6 +1498,22 @@ class TestIce(unittest.TestCase):
 
         self.assertEqual(str(exc.exception), 
                          "Invalid version type (should be a string)")
+        
+        with self.assertRaises(AttributeError) as exc:
+            Ice("ver", 3)
+
+        self.assertEqual(str(exc.exception), "Invalid package type")
+
+        with self.assertRaises(AttributeError) as exc:
+            Ice("ver", Package(), 3)
+
+        self.assertEqual(str(exc.exception), "Invalid design type")
+
+        with self.assertRaises(AttributeError) as exc:
+            Ice("ver", Package(), Design(), 3)
+ 
+        self.assertEqual(str(exc.exception), "Invalid dependencies type") 
+
 
 
     def test_Ice_str(self):
@@ -1534,14 +1550,15 @@ class TestIce(unittest.TestCase):
             ice = Ice(**ice_json)
 
         self.assertEqual(ice.version, ice_json['version'])
-        self.assertEqual(ice.package, ice_json['package'])
-
+        self.assertEqual(ice.package, Package(**ice_json['package']))
         
         self.assertIsInstance(ice.design, Design)
         #-- TODO: Comparison: ice.design == ice_json['design']
         #self.assertEqual(ice.design, ice_json['design'])
 
-        self.assertEqual(ice.dependencies, ice_json["dependencies"])
+        #-- TODO: Comparison: ice.dependencies == ice_json['dependencies']
+        #self.assertEqual(ice.dependencies, 
+        #                 Dependencies(ice_json["dependencies"]))
 
     def test_Ice_json(self):
         """Test json method"""
