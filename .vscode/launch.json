@@ -11,6 +11,17 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "justMyCode": true
+        }, 
+        {
+            "name": "Python: Current File with arguments",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "args": [
+                "../Test-files/test-17-icek-1.ice"
+            ], 
+            "justMyCode": true
         }
     ]
 }

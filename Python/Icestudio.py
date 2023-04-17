@@ -1213,6 +1213,13 @@ class Dependencies:
 class Ice:
     """Class for representing a full Icestudio circuit"""
 
+    @classmethod
+    def is_basic_block(cls, type:str) -> bool:
+        """Check if it is a basic block or not"""
+
+        return type in ['basic.output', 'basic.info', 'basic.code',
+                        'basic.input']
+
     def __init__(self, 
                  version: str="", 
                  package=Package(), 
@@ -1294,3 +1301,48 @@ class Ice:
         self.package = ice_json['package']
         self.design = Design(**ice_json['design'])
         self.dependencies = Dependencies(ice_json['dependencies'])
+
+
+    def get_next_level_blocks(self, level:list) -> list:
+        """Given a list of blocks, it returns the list of blocks"""
+        """of the next level (below the current one)"""
+
+        #-- Response list
+        blocks = []
+
+        for block in level:
+
+            #-- If the block is not basic it will have other blocks inside
+            if not Ice.is_basic_block(block.type):
+
+                #-- Get the component
+                comp = self.dependencies.dict[block.type]
+
+                #-- Add all its child blocks to the list
+                blocks.extend(comp.design.graph.blocks.list)
+
+        #-- Return the calculated list
+        return blocks
+    
+
+    def get_level_blocks(self) -> list:
+        """Get all the blocks organized by levels
+        
+        It returns a list of lists. One list per level
+        """
+
+        #-- List of blocks in each level
+        levels = []
+
+        #-- Get the TOP level blocks
+        level = self.design.graph.blocks.list
+
+        while level != []:
+
+            #-- Add the current list of blocks
+            levels.append(level)
+
+            level = self.get_next_level_blocks(level)
+
+        return levels
+
