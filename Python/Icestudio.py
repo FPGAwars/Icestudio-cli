@@ -893,6 +893,63 @@ class DataPin:
                    (self.pins == __value.pins)
 
 
+class DataConstant:
+    """Constant parameters"""
+
+    def __init__(self, 
+                 name:str="",
+                 value:str="",
+                 local:bool=False) -> None:
+        
+        #------- Name Attribute
+        #-- Check type
+        if isinstance(name, str):
+            self.name = name
+
+        else:
+            raise AttributeError("name is not a String")
+        
+        #------- Value Attribute
+        #-- Check type
+        if isinstance(value, str):
+            self.value = value
+
+        else:
+            raise AttributeError("value is not a String")
+        
+        #------- Local Attribute
+        #-- Check type
+        if isinstance(local, bool):
+            self.local = local
+
+        else:
+            raise AttributeError("local is not Boolean")
+
+
+    def __str__(self) -> str:
+        """String representation"""
+
+        cad = f"Constant({self.name}, {self.value}, {self.local})"
+        return cad
+    
+    def __repr__(self) -> str:
+        return str(self)
+    
+    def json(self) -> dict:
+        return {
+            "name": self.name,
+            "value": self.value,
+            "local": self.local
+        }
+    
+    def __eq__(self, __value: object) -> bool:
+        """Compare two objects"""
+
+        if isinstance(__value, DataConstant):
+            return (self.name == __value.name) and \
+                   (self.value == __value.value) and \
+                   (self.local == __value.local)
+
 
 class Block:
     """Class for representing an Icestudio block"""

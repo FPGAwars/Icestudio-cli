@@ -5,7 +5,7 @@ import json
 from Icestudio import \
     Size, DataInfo, Position, Block, Blocks, Graph, Design, Ice, Pin, \
     Pins, DataPin, Port, Range, Ports, InOutPorts, DataCode, EndPoint, \
-    Wire, Wires, Package, UserBlock, Dependencies
+    Wire, Wires, Package, UserBlock, Dependencies, DataConstant
 
 class TestPackage(unittest.TestCase):
 
@@ -1034,7 +1034,6 @@ class TestDataPin(unittest.TestCase):
         self.assertEqual(data.size, 2)
 
 
-
     def test_DataPin_eq(self):
         """Test operator =="""
 
@@ -1044,7 +1043,82 @@ class TestDataPin(unittest.TestCase):
 
         datapin3 = DataPin("Led2", False, pins=Pins())
         self.assertNotEqual(datapin1, datapin3)
-    
+
+
+class TestDataConstant(unittest.TestCase):
+
+    def test_DataConstant(self):
+        """Test the constructor"""
+
+        cte = DataConstant("constant", "2'b11", True)
+        self.assertEqual(cte.name, "constant")
+        self.assertEqual(cte.value, "2'b11")
+        self.assertEqual(cte.local, True)
+
+        cte = DataConstant()
+        self.assertEqual(cte.name, "")
+        self.assertEqual(cte.value, "")
+        self.assertEqual(cte.local, False)
+
+        #-- Check for invalid parameters
+        with self.assertRaises(AttributeError) as exc:
+            DataConstant(3)
+
+        self.assertEqual(str(exc.exception), "name is not a String")
+
+        with self.assertRaises(AttributeError) as exc:
+            DataConstant("Hi", 3)
+
+        self.assertEqual(str(exc.exception), "value is not a String")
+
+        with self.assertRaises(AttributeError) as exc:
+            DataConstant("Hi", "Dude!", 3)
+
+        self.assertEqual(str(exc.exception), "local is not Boolean")
+
+
+    def test_DataConstant_str(self):
+        """Test the str method"""
+
+        cte = DataConstant()
+        self.assertEqual(str(cte), "Constant(, , False)")
+
+        cte = DataConstant("Hi", "you")
+        self.assertEqual(str(cte), "Constant(Hi, you, False)")
+
+    def test_DataConstant_json(self):
+        """Test json method"""
+
+        cte = DataConstant()
+        self.assertEqual(cte.json(), 
+            {'name': '', 'value': '', 'local': False})
+        
+        cte = DataConstant("Hi", "you")
+        self.assertEqual(cte.json(), 
+            {'name': 'Hi', 'value': 'you', 'local': False})
+        
+    def test_DataConstant_eq(self):
+        """Test operator =="""
+
+        cte1 = DataConstant()
+        cte2 = DataConstant()
+        self.assertEqual(cte1, cte2)
+
+        cte3 = DataConstant("Hi!")
+        self.assertNotEqual(cte1, cte3)
+
+    def test_DataConstant_file(self):
+        """Test from json files"""
+
+        #-- Open a json test file
+        with open("../Test-files/dataConstant.ice") as f:
+            cte = DataConstant(**json.load(f))
+
+        self.assertEqual(cte.name, "constant")
+        self.assertEqual(cte.value, "2'b11")
+        self.assertEqual(cte.local, True)
+
+
 
 
 class TestBlock(unittest.TestCase):
