@@ -951,6 +951,17 @@ class DataConstant:
                    (self.local == __value.local)
 
 
+class DataMemory:
+    """Memory parameter"""
+
+    def __init__(self, 
+                 name:str="",
+                 value:str="",
+                 local:bool=False) -> None:
+        ...
+
+
+
 class Block:
     """Class for representing an Icestudio block"""
     def __init__(self, 
@@ -1011,6 +1022,18 @@ class Block:
                 #-- check if it has been defined as a Json object (dictionary)
                 elif isinstance(data, dict):
                     self.data = DataCode(**data)
+
+                else:
+                    raise AttributeError("Unknow type for data")
+
+            case "basic.constant":
+                #-- Check if it is a DataConstant object
+                if isinstance(data, DataConstant):
+                    self.data = data
+
+                #-- Check if it has been defined as a Json object (dictionary)
+                elif isinstance(data, dict):
+                    self.data = DataConstant(**data)
 
                 else:
                     raise AttributeError("Unknow type for data")
@@ -1275,7 +1298,7 @@ class Ice:
         """Check if it is a basic block or not"""
 
         return type in ['basic.output', 'basic.info', 'basic.code',
-                        'basic.input']
+                        'basic.input', 'basic.constant']
 
     def __init__(self, 
                  version: str="", 
