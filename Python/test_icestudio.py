@@ -5,7 +5,8 @@ import json
 from Icestudio import \
     Size, DataInfo, Position, Block, Blocks, Graph, Design, Ice, Pin, \
     Pins, DataPin, Port, Range, Ports, InOutPorts, DataCode, EndPoint, \
-    Wire, Wires, Package, UserBlock, Dependencies, DataConstant
+    Wire, Wires, Package, UserBlock, Dependencies, DataConstant, \
+    DataMemory
 
 class TestPackage(unittest.TestCase):
 
@@ -1119,7 +1120,91 @@ class TestDataConstant(unittest.TestCase):
         self.assertEqual(cte.local, True)
 
 
+class TestDataMemory(unittest.TestCase):
 
+    def test_DataMemory(self):
+        """Test the constructor"""
+
+        mem = DataMemory("mem", "1\n2\n3\n", True, 16)
+        self.assertEqual(mem.name, "mem")
+        self.assertEqual(mem.list, "1\n2\n3\n")
+        self.assertEqual(mem.local, True)
+        self.assertEqual(mem.format, 16)
+
+        mem = DataMemory()
+        self.assertEqual(mem.name, "")
+        self.assertEqual(mem.list, "")
+        self.assertEqual(mem.local, False)
+        self.assertEqual(mem.format, 10)
+
+        #-- Check for invalid parameters
+        with self.assertRaises(AttributeError) as exc:
+            DataMemory(3)
+
+        self.assertEqual(str(exc.exception), "name is not a String")
+
+        with self.assertRaises(AttributeError) as exc:
+            DataMemory("mem", 3)
+
+        self.assertEqual(str(exc.exception), "list is not a String")
+
+        with self.assertRaises(AttributeError) as exc:
+            DataMemory("Mem", "1\n2\n3\n", 3)
+
+        self.assertEqual(str(exc.exception), "local is not Boolean")
+
+        with self.assertRaises(AttributeError) as exc:
+            DataMemory("Mem", "1\n2\n3\n", True, "a")
+
+        self.assertEqual(str(exc.exception), "format is not int")
+
+
+    def test_DataMemory_str(self):
+        """Test the str method"""
+
+        mem = DataMemory("Mem", "1\n2\n", True, 10)
+        self.assertEqual(str(mem), "Memory(Mem, True, 10)")
+
+        mem = DataMemory()
+        self.assertEqual(str(mem), "Memory(, False, 10)")
+
+
+    def test_DataMemory_json(self):
+        """Test json method"""
+
+        mem = DataMemory("Mem", "1\n2\n", True, 10)
+        self.assertEqual(mem.json(), 
+            {'name': 'Mem', 
+             'list': '1\n2\n', 
+             'local': True,
+             'format': 10})
+        
+    def test_DataMemory_eq(self):
+        """Test operator =="""
+
+        mem1 = DataMemory()
+        mem2 = DataMemory()
+        self.assertEqual(mem1, mem2)
+
+        mem3 = DataMemory("Hi!")
+        self.assertNotEqual(mem1, mem3)
+
+
+    def test_DataMemory_file(self):
+        """Test from json files"""
+
+        #-- Open a json test file
+        with open("../Test-files/dataMemory.ice") as f:
+            mem = DataMemory(**json.load(f))
+
+        self.assertEqual(mem.name, "Mem")
+        self.assertEqual(mem.list, "5\n3\na\nb\n")
+        self.assertEqual(mem.local, True)
+        self.assertEqual(mem.format, 16)
+
+
+
+        
 
 class TestBlock(unittest.TestCase):
 

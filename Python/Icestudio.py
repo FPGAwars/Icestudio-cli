@@ -956,9 +956,67 @@ class DataMemory:
 
     def __init__(self, 
                  name:str="",
-                 value:str="",
-                 local:bool=False) -> None:
-        ...
+                 list:str="",
+                 local:bool=False,
+                 format:int=10) -> None:
+        
+        #------- Name Attribute
+        #-- Check type
+        if isinstance(name, str):
+            self.name = name
+
+        else:
+            raise AttributeError("name is not a String")
+        
+        #------- List Attribute
+        #-- Check type
+        if isinstance(list, str):
+            self.list = list
+
+        else:
+            raise AttributeError("list is not a String")
+        
+        #------- Local Attribute
+        #-- Check type
+        if isinstance(local, bool):
+            self.local = local
+
+        else:
+            raise AttributeError("local is not Boolean")
+        
+        #------- Format Attribute
+        #-- Check type
+        if isinstance(format, int):
+            self.format = format
+
+        else:
+            raise AttributeError("format is not int")
+
+    def __str__(self) -> str:
+        """String representation"""
+
+        cad = f"Memory({self.name}, {self.local}, {self.format})"
+        return cad
+    
+    def __repr__(self) -> str:
+        return str(self)
+    
+    def json(self) -> dict:
+        return {
+            "name": self.name,
+            "list": self.list,
+            "local": self.local,
+            "format": self.format
+        }
+    
+    def __eq__(self, __value: object) -> bool:
+        """Compare two objects"""
+
+        if isinstance(__value, DataMemory):
+            return (self.name == __value.name) and \
+                   (self.list == __value.list) and \
+                   (self.local == __value.local) and \
+                   (self.format == __value.format)
 
 
 
