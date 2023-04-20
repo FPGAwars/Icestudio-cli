@@ -6,7 +6,7 @@ from Icestudio import \
     Size, DataInfo, Position, Block, Blocks, Graph, Design, Ice, Pin, \
     Pins, DataPin, Port, Range, Ports, InOutPorts, DataCode, EndPoint, \
     Wire, Wires, Package, UserBlock, Dependencies, DataConstant, \
-    DataMemory
+    DataMemory, DataLabel
 
 class TestPackage(unittest.TestCase):
 
@@ -938,6 +938,8 @@ class TestDataInfo(unittest.TestCase):
             {"info": "Testing...", "readonly": True})
 
 
+
+
 class TestDataPin(unittest.TestCase):
 
     def test_DataPin(self):
@@ -1044,6 +1046,84 @@ class TestDataPin(unittest.TestCase):
 
         datapin3 = DataPin("Led2", False, pins=Pins())
         self.assertNotEqual(datapin1, datapin3)
+
+
+class TestDataLabel(unittest.TestCase):
+
+    def test_DataLabel(self):
+        """Test the constructor"""
+
+        data = DataLabel("test", "green", True, Pins())
+        self.assertEqual(data.name, "test")
+        self.assertEqual(data.blockColor, "green")
+        self.assertEqual(data.virtual, True)
+        self.assertEqual(data.pins, Pins())
+
+        data = DataLabel("test", "green", True, Pins(), Range(2))
+        self.assertEqual(data.name, "test")
+        self.assertEqual(data.blockColor, "green")
+        self.assertEqual(data.virtual, True)
+        self.assertEqual(data.pins, Pins())
+        self.assertEqual(data.range, Range(2))
+
+        #-- Check for invalid types
+        with self.assertRaises(AttributeError) as exc:
+            DataLabel(3)
+
+        self.assertEqual(str(exc.exception), "name is not a String")
+
+        with self.assertRaises(AttributeError) as exc:
+            DataLabel("test", 3)
+
+        self.assertEqual(str(exc.exception), "blockColor is not a String")
+
+        with self.assertRaises(AttributeError) as exc:
+            DataLabel("test", "green", 3)
+
+        self.assertEqual(str(exc.exception), "virtual is not Boolean")
+
+        with self.assertRaises(AttributeError) as exc:
+            DataLabel("test", "green", True, 3)
+
+        self.assertEqual(str(exc.exception), "Invalid type for pins")
+
+        with self.assertRaises(AttributeError) as exc:
+            DataLabel("test", "green", True, Pins(), 3)
+
+        self.assertEqual(str(exc.exception), "Invalid type for range")
+
+    def test_DataLabel_str(self):
+        """Test the str method"""
+
+        data = DataLabel("test", "green", True, Pins())
+        self.assertEqual(str(data), 
+                         "Label(test,green,True)")
+        
+    def test_DataLabel_json(self):
+        """Test the json method"""
+
+        data = DataLabel("test", "green", True, Pins())
+        self.assertEqual(
+            data.json(), 
+            {
+            "name": "test",
+            "blockColor": "green",
+            "virtual": True,
+            "pins": Pins()
+            }
+        )
+
+    def test_DataLabel_eq(self):
+        """Test operator =="""
+
+        #-- TODO
+        label1 = DataLabel("test", "green", True, Pins())
+        label2 = DataLabel("test", "green", True, Pins())
+        self.assertEqual(label1, label2)
+
+        label3 = DataLabel("test3", "green", True, Pins())
+        self.assertNotEqual(label1, label3)
+
 
 
 class TestDataConstant(unittest.TestCase):

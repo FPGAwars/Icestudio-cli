@@ -227,6 +227,9 @@ class Range:
         return self.max + 1
 
     def __eq__(self, __value: object) -> bool:
+        if __value == None:
+            return False
+        
         return self.max == __value.max
 
 
@@ -891,6 +894,100 @@ class DataPin:
             return (self.name == __value.name) and \
                    (self.virtual == __value.virtual) and \
                    (self.pins == __value.pins)
+
+class DataLabel:
+    """Class for representing input/output label"""
+
+    def __init__(self, 
+                 name="", 
+                 blockColor="fuchsia",
+                 virtual=True, 
+                 pins=Pins(),
+                 range=None) -> None:
+        
+        #-- Set the name attribute
+        if isinstance(name, str):
+            self.name = name
+
+        else:
+            raise AttributeError("name is not a String")
+        
+        #-- If given, check range types
+        if range != None:
+            if isinstance(range, Range):
+                self.range = range
+
+            elif isinstance(range, dict): 
+                self.range = Range(range)
+
+            else:
+                raise AttributeError("Invalid type for range")
+            
+
+        #-- Set the blockColor attribute
+        if isinstance(blockColor, str):
+            self.blockColor = blockColor
+
+        else:
+            raise AttributeError("blockColor is not a String")
+        
+        #-- Set the virtual attribute
+        if isinstance(virtual, bool):
+            self.virtual = virtual
+
+        else:
+            raise AttributeError("virtual is not Boolean")
+        
+
+        if isinstance(pins, Pins):
+            self.pins = pins
+
+        elif isinstance(pins, list):
+            self.pins = Pins(*pins)
+
+        else:
+            raise AttributeError("Invalid type for pins")
+        
+    
+    def __str__(self) -> str:
+        """String representation"""
+
+        cad = f"Label({self.name}"
+
+        if hasattr(self, "range"):
+            cad += f",{self.range}"
+
+        cad += f",{self.blockColor}"
+
+        cad += f",{self.virtual})"
+
+        return cad
+
+
+    def json(self) -> dict:
+        obj = {
+            "name": self.name,
+            "blockColor": self.blockColor,
+            "virtual": self.virtual,
+            "pins": self.pins
+        }
+
+        if hasattr(self, "range"):
+            obj["range"] = str(self.range)
+
+        return obj
+    
+    def __eq__(self, __value: object) -> bool:
+        """Compare two objects"""
+
+        if isinstance(__value, DataLabel):
+            return (self.name == __value.name) and \
+                   (self.blockColor == __value.blockColor) and \
+                   (self.virtual == __value.virtual) and \
+                   (self.pins == __value.pins)
+    
+
+
 
 
 class DataConstant:
