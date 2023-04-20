@@ -1124,6 +1124,26 @@ class TestDataLabel(unittest.TestCase):
         label3 = DataLabel("test3", "green", True, Pins())
         self.assertNotEqual(label1, label3)
 
+    def test_DataLabel_file(self):
+        """Test from json files"""
+
+        #-- Open a json test file
+        with open("../Test-files/dataLabel1.ice") as f:
+            label = DataLabel(**json.load(f))
+
+        self.assertEqual(label.name, "test")
+        self.assertEqual(label.blockColor, "fuchsia")
+        self.assertEqual(label.virtual, True)
+        self.assertEqual(label.pins, Pins(Pin()))
+
+        with open("../Test-files/dataLabel2.ice") as f:
+            label = DataLabel(**json.load(f))
+
+        self.assertEqual(label.name, "test")
+        self.assertEqual(label.blockColor, "fuchsia")
+        self.assertEqual(label.virtual, True)
+        self.assertEqual(label.pins, Pins(Pin("1"), Pin("0")))
+
 
 
 class TestDataConstant(unittest.TestCase):

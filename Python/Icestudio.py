@@ -917,7 +917,7 @@ class DataLabel:
             if isinstance(range, Range):
                 self.range = range
 
-            elif isinstance(range, dict): 
+            elif isinstance(range, str): 
                 self.range = Range(range)
 
             else:
