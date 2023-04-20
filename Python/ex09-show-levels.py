@@ -4,7 +4,7 @@ from Icestudio import Ice, Blocks, Dependencies
 
 #-- Manual file
 #FILE = ""
-FILE = "../Test-files/test-18-k-simple-two-levels.ice"
+FILE = "../Test-files/test-20-memory-labels.ice"
 
 
 if FILE == "":

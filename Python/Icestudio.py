@@ -1192,6 +1192,30 @@ class Block:
 
                 else:
                     raise AttributeError("Unknow type for data")
+                
+            case "basic.memory":
+                #-- Check if it is a DataMemory object
+                if isinstance(data, DataMemory):
+                    self.data = data
+
+                #-- Check if it has been defined as a Json object (dictionary)
+                elif isinstance(data, dict):
+                    self.data = DataMemory(**data)
+
+                else:
+                    raise AttributeError("Unknow type for data")
+                
+            case "basic.inputLabel" | "basic.outputLabel":
+                #-- Check if it is a Label object
+                if isinstance(data, DataLabel):
+                    self.data = data
+
+                #-- Check if it has been defined as a Json object (dictionary)
+                elif isinstance(data, dict):
+                    self.data = DataLabel(**data)
+
+                else:
+                    raise AttributeError("Unknow type for data")
 
             #-- User block
             case _:
@@ -1453,7 +1477,8 @@ class Ice:
         """Check if it is a basic block or not"""
 
         return type in ['basic.output', 'basic.info', 'basic.code',
-                        'basic.input', 'basic.constant']
+                        'basic.input', 'basic.constant', 'basic.memory',
+                        'basic.inputLabel', 'basic.outputLabel']
 
     def __init__(self, 
                  version: str="", 
