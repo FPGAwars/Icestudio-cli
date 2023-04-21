@@ -867,16 +867,17 @@ class DataPin:
             "name": self.name
         }
 
+        #-- Add the virtual attribute (if it exists)
+        if hasattr(self, "virtual"):
+            obj["virtual"] = self.virtual
+
         if hasattr(self, "pins"):
             obj["pins"] = self.pins.json()
 
         if hasattr(self, "range"):
             obj["range"] = str(self.range)
 
-        #-- Add the virtual attribute (if it exists)
-        if hasattr(self, "virtual"):
-            obj["virtual"] = self.virtual
-
+        
         #-- Add the clock attribute (if it exists)
         if hasattr(self, "clock"):
             obj["clock"] = self.clock
@@ -1124,7 +1125,7 @@ class Block:
                  type="",
                  data=None,
                  position=Position(),
-                 size=Size()) -> None:
+                 size=None) -> None:
         
         #------------ Id Attribute
         #-- Check if it is an String
@@ -1239,17 +1240,18 @@ class Block:
             raise AttributeError("Unknow type for position")
 
         #------- Size property
-        #-- Check if it is a Size object
-        if isinstance(size, Size):
-            self.size = size
+        if size != None:
+            #-- Check if it is a Size object
+            if isinstance(size, Size):
+                self.size = size
 
-        #-- Check if it has been defined as an Json object (dictionary)
-        elif isinstance(size, dict):
-            self.size = Size(**size)
+            #-- Check if it has been defined as an Json object (dictionary)
+            elif isinstance(size, dict):
+                self.size = Size(**size)
 
-        #-- Unknown type for the design attribute
-        else:
-            raise AttributeError("Unknow type for size")
+            #-- Unknown type for the design attribute
+            else:
+                raise AttributeError("Unknow type for size")
 
 
     def __str__(self) -> str:
@@ -1260,7 +1262,8 @@ class Block:
         if hasattr(self, "data"):
             cad += f"Data: {self.data}\n"
         cad += f"Pos: {self.position}\n"
-        cad += f"Size: {self.size}\n"
+        if hasattr(self, "size"):
+          cad += f"Size: {self.size}\n"
         return cad
     
     def json(self):
@@ -1269,12 +1272,15 @@ class Block:
         obj = {
             "id": self.id,
             "type": self.type,
-            "position": self.position.json(),
-            "size": self.size.json()
         }
 
         if hasattr(self, "data"):
             obj['data'] = self.data.json()
+
+        obj['position'] = self.position.json()
+
+        if hasattr(self, "size"):
+            obj['size'] = self.size.json()
 
         return obj
 

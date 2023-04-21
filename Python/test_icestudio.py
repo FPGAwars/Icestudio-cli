@@ -1467,11 +1467,10 @@ class TestBlocks(unittest.TestCase):
                         "id: id1\n"
                         "Type: \n"
                         "Pos: Pos(0, 0)\n"
-                        "Size: Size(0, 0)\n\n"
+                        "\n"
                         "id: id2\n"
                         "Type: \n"
-                        "Pos: Pos(0, 0)\n"
-                        "Size: Size(0, 0)\n")
+                        "Pos: Pos(0, 0)\n")
 
     def test_Blocks_file(self):
         """Test Blocks from json files"""
@@ -1492,10 +1491,10 @@ class TestBlocks(unittest.TestCase):
         self.assertEqual(blocks.json(), 
                          [{'id': 'id1', 'type': '', 
                            'position': {'x': 0, 'y': 0},
-                           'size': {'width': 0, 'height': 0}}, 
+                          }, 
                          {'id': 'id2', 'type': '',  
                           'position': {'x':0, 'y':0}, 
-                          'size': {'width': 0, 'height': 0}}])
+                          }])
 
 
 
@@ -1882,7 +1881,7 @@ class TestIce(unittest.TestCase):
                 }, 
             'dependencies': {}})
         
-    def test_icestudio_blank(self):
+    def test_icestudio_gen_files(self):
         """Check if generated .ice files are the same as Icestudio"""
 
         FOLDER = "../Test-files/Icestudio"
@@ -1890,7 +1889,8 @@ class TestIce(unittest.TestCase):
 
         #-- Blank icestudio circuit
         self.compareIce(f"{FOLDER}/01-blank.ice", TARGET)
-
+        self.compareIce(f"{FOLDER}/02-basic-output.ice", TARGET)
+        
 
 if __name__ == '__main__':
     unittest.main()
