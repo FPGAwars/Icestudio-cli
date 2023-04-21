@@ -1891,6 +1891,9 @@ class TestIce(unittest.TestCase):
         self.compareIce(f"{FOLDER}/01-blank.ice", TARGET)
         self.compareIce(f"{FOLDER}/02-basic-output.ice", TARGET)
         self.compareIce(f"{FOLDER}/03-basic-output-2.ice", TARGET)
+        self.compareIce(f"{FOLDER}/04-basic-input.ice", TARGET)
+
+        
         
 
 if __name__ == '__main__':
