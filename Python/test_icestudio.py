@@ -1889,9 +1889,15 @@ class TestIce(unittest.TestCase):
 
         #-- Blank icestudio circuit
         self.compareIce(f"{FOLDER}/01-blank.ice", TARGET)
+
+        #-- Circuits with 1 basic output
         self.compareIce(f"{FOLDER}/02-basic-output.ice", TARGET)
         self.compareIce(f"{FOLDER}/03-basic-output-2.ice", TARGET)
+
+        #-- Circuits with 1 basic input
         self.compareIce(f"{FOLDER}/04-basic-input.ice", TARGET)
+        self.compareIce(f"{FOLDER}/05-basic-input-2.ice", TARGET)
+
 
         
         
