@@ -871,19 +871,18 @@ class DataPin:
         if hasattr(self, "virtual"):
             obj["virtual"] = self.virtual
 
-        if hasattr(self, "pins"):
-            obj["pins"] = self.pins.json()
-
         if hasattr(self, "range"):
             obj["range"] = str(self.range)
 
+        if hasattr(self, "pins"):
+            obj["pins"] = self.pins.json()
         
         #-- Add the clock attribute (if it exists)
         if hasattr(self, "clock"):
             obj["clock"] = self.clock
 
-        if self.size != None:
-            obj["size"] = self.size
+        #if self.size != None:
+        #    obj["size"] = self.size
 
         return obj
     

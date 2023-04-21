@@ -3,7 +3,7 @@ import sys
 import json
 from Icestudio import Ice, Blocks, Dependencies
 
-FILE_SRC = "../Test-files/Icestudio/02-basic-output.ice"
+FILE_SRC = "../Test-files/Icestudio/03-basic-output-2.ice"
 FILE_TARGET = "../Test-files/temp.ice"
 
 #-- Read original file created with icestudio

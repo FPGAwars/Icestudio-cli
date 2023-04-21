@@ -1890,6 +1890,7 @@ class TestIce(unittest.TestCase):
         #-- Blank icestudio circuit
         self.compareIce(f"{FOLDER}/01-blank.ice", TARGET)
         self.compareIce(f"{FOLDER}/02-basic-output.ice", TARGET)
+        self.compareIce(f"{FOLDER}/03-basic-output-2.ice", TARGET)
         
 
 if __name__ == '__main__':
