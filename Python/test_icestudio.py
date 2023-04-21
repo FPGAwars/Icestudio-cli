@@ -2,6 +2,7 @@
 
 import unittest
 import json
+import filecmp
 from Icestudio import \
     Size, DataInfo, Position, Block, Blocks, Graph, Design, Ice, Pin, \
     Pins, DataPin, Port, Range, Ports, InOutPorts, DataCode, EndPoint, \
@@ -79,7 +80,7 @@ class TestPackage(unittest.TestCase):
         """Test from json files"""
 
         #-- Open a json test file
-        with open("../Test-files/package.ice") as f:
+        with open("../Test-files/json/package.json") as f:
             pack = Package(**json.load(f))
 
         self.assertEqual(pack.name, "bit1")
@@ -135,7 +136,7 @@ class TestSize(unittest.TestCase):
         """Test Size from json files"""
 
         #-- Open a json test file
-        with open("../Test-files/size.ice") as f:
+        with open("../Test-files/json/size.json") as f:
             size = Size(**json.load(f))
 
         self.assertEqual(size.width, 248)
@@ -192,7 +193,7 @@ class TestPosition(unittest.TestCase):
         """Test Position from json files"""
 
         #-- Open a json test file
-        with open("../Test-files/position.ice") as f:
+        with open("../Test-files/json/position.json") as f:
              pos = Position(**json.load(f))
 
         self.assertEqual(pos.x, 360)
@@ -386,7 +387,7 @@ class TestInOutPorts(unittest.TestCase):
         """Test from json files"""
 
         #-- Open a json test file
-        with open("../Test-files/inoutports.ice") as f:
+        with open("../Test-files/json/inoutports.json") as f:
             ioports_json = json.load(f)
 
             #-- Cambiar la propiedad "in" por "inp"
@@ -478,7 +479,7 @@ class TestPort(unittest.TestCase):
         """Test from json files"""
 
         #-- Open a json test file
-        with open("../Test-files/port1.ice") as f:
+        with open("../Test-files/json/port1.json") as f:
              port = Port(**json.load(f))
 
         self.assertEqual(port.name, "Hi!")
@@ -529,7 +530,7 @@ class TestPin(unittest.TestCase):
         """Test Pin from json files"""
 
         #-- Open a json test file
-        with open("../Test-files/pin.ice") as f:
+        with open("../Test-files/json/pin.json") as f:
              pin = Pin(**json.load(f))
 
         self.assertEqual(pin.index, "2")
@@ -586,7 +587,7 @@ class TestPins(unittest.TestCase):
         """Test Pins from json files"""
 
         #-- Open a json test file
-        with open("../Test-files/pins.ice") as f:
+        with open("../Test-files/json/pins.json") as f:
             pins_json = json.load(f)
             pins = Pins(*pins_json)
         #-- TODO pins.list == Pins(*pins_json)
@@ -662,7 +663,7 @@ class TestEndPoint(unittest.TestCase):
         """Test from json files"""
 
         #-- Open a json test file
-        with open("../Test-files/endpoint.ice") as f:
+        with open("../Test-files/json/endpoint.json") as f:
             endp = EndPoint(**json.load(f))
 
         self.assertEqual(endp, EndPoint("0766f96f", "out"))
@@ -744,7 +745,7 @@ class TestWire(unittest.TestCase):
         """Test from json files"""
 
         #-- Open a json test file
-        with open("../Test-files/wire.ice") as f:
+        with open("../Test-files/json/wire.json") as f:
             wire = Wire(**json.load(f))
 
         self.assertEqual(wire.source, 
@@ -808,7 +809,7 @@ class TestWires(unittest.TestCase):
         """Test Wires from json files"""
 
         #-- Open a json test file
-        with open("../Test-files/wires.ice") as f:
+        with open("../Test-files/json/wires.json") as f:
             wires_json = json.load(f)
             wiress = Wires(*wires_json)
         #-- TODO wires.list == Wires(*wires_json)
@@ -865,7 +866,7 @@ class TestDataCode(unittest.TestCase):
         """Test from json files"""
 
         #-- Open a json test file
-        with open("../Test-files/dataCode.ice") as f:
+        with open("../Test-files/json/dataCode.json") as f:
             data = DataCode(**json.load(f))
 
         self.assertEqual(data.ports, 
@@ -920,7 +921,7 @@ class TestDataInfo(unittest.TestCase):
         """Test DataInfo from json files"""
 
         #-- Open a json test file
-        with open("../Test-files/dataInfo.ice") as f:
+        with open("../Test-files/json/dataInfo.json") as f:
             data = DataInfo(**json.load(f))
 
         self.assertEqual(data.info, "This is a comment")
@@ -1013,14 +1014,14 @@ class TestDataPin(unittest.TestCase):
         """Test DataPin from json files"""
 
         #-- Open a json test file
-        with open("../Test-files/dataPin.ice") as f:
+        with open("../Test-files/json/dataPin.json") as f:
             data = DataPin(**json.load(f))
 
         self.assertEqual(data.name, "Led")
         self.assertEqual(data.virtual, False)
         self.assertEqual(data.pins, Pins(Pin("1", "N1", "V1")))
 
-        with open("../Test-files/dataPin2.ice") as f:
+        with open("../Test-files/json/dataPin2.json") as f:
             data = DataPin(**json.load(f))
 
         self.assertEqual(data.name, "Boton")
@@ -1028,7 +1029,7 @@ class TestDataPin(unittest.TestCase):
         self.assertEqual(data.pins, Pins(Pin("0", "SW1", "34")))
         self.assertEqual(data.clock, False)
 
-        with open("../Test-files/dataPin3.ice") as f:
+        with open("../Test-files/json/dataPin3.json") as f:
             data = DataPin(**json.load(f))
 
         self.assertEqual(data.name, "")
@@ -1128,7 +1129,7 @@ class TestDataLabel(unittest.TestCase):
         """Test from json files"""
 
         #-- Open a json test file
-        with open("../Test-files/dataLabel1.ice") as f:
+        with open("../Test-files/json/dataLabel1.json") as f:
             label = DataLabel(**json.load(f))
 
         self.assertEqual(label.name, "test")
@@ -1136,7 +1137,7 @@ class TestDataLabel(unittest.TestCase):
         self.assertEqual(label.virtual, True)
         self.assertEqual(label.pins, Pins(Pin()))
 
-        with open("../Test-files/dataLabel2.ice") as f:
+        with open("../Test-files/json/dataLabel2.json") as f:
             label = DataLabel(**json.load(f))
 
         self.assertEqual(label.name, "test")
@@ -1212,7 +1213,7 @@ class TestDataConstant(unittest.TestCase):
         """Test from json files"""
 
         #-- Open a json test file
-        with open("../Test-files/dataConstant.ice") as f:
+        with open("../Test-files/json/dataConstant.json") as f:
             cte = DataConstant(**json.load(f))
 
         self.assertEqual(cte.name, "constant")
@@ -1294,7 +1295,7 @@ class TestDataMemory(unittest.TestCase):
         """Test from json files"""
 
         #-- Open a json test file
-        with open("../Test-files/dataMemory.ice") as f:
+        with open("../Test-files/json/dataMemory.json") as f:
             mem = DataMemory(**json.load(f))
 
         self.assertEqual(mem.name, "Mem")
@@ -1403,7 +1404,7 @@ class TestBlock(unittest.TestCase):
         """Test Block from json files"""
 
         #-- Open a json test file
-        with open("../Test-files/block.ice") as f:
+        with open("../Test-files/json/block.json") as f:
             block = Block(**json.load(f))
 
         self.assertEqual(block.id, "9838541d-8656-43e3-8d83-69d14ebd9622")
@@ -1476,7 +1477,7 @@ class TestBlocks(unittest.TestCase):
         """Test Blocks from json files"""
 
         #-- Open a json test file
-        with open("../Test-files/blocks.ice") as f:
+        with open("../Test-files/json/blocks.json") as f:
             blocks_json = json.load(f)
             blocks = Blocks(*blocks_json)
         #-- TODO blocks.list == Blocks(*blocks_json)
@@ -1533,7 +1534,7 @@ class TestGraph(unittest.TestCase):
         """Test Graph from json files"""
 
         #-- Open a json test file
-        with open("../Test-files/graph.ice") as f:
+        with open("../Test-files/json/graph.json") as f:
             graph_json = json.load(f)
             graph = Graph(**graph_json)
 
@@ -1587,7 +1588,7 @@ class TestDesign(unittest.TestCase):
         """Test Design from json files"""
 
         #-- Open a json test file
-        with open("../Test-files/design.ice") as f:
+        with open("../Test-files/json/design.json") as f:
             design_json = json.load(f)
             design = Design(**design_json)
 
@@ -1650,7 +1651,7 @@ class TestUserBlock(unittest.TestCase):
         """Test from json files"""
 
         #-- Open a json test file
-        with open("../Test-files/userblock.ice") as f:
+        with open("../Test-files/json/userblock.json") as f:
             user_json = json.load(f)
             user = UserBlock(**user_json)
 
@@ -1735,7 +1736,7 @@ class TestDependencies(unittest.TestCase):
         """Test from json files"""
 
         #-- Open a json test file
-        with open("../Test-files/dependencies.ice") as f:
+        with open("../Test-files/json/dependencies.json") as f:
             dep_json = json.load(f)
             dep = Dependencies(dep_json)
 
@@ -1745,11 +1746,30 @@ class TestDependencies(unittest.TestCase):
 
 class TestIce(unittest.TestCase):
 
+    def compareIce(self, src, target):
+        """Check if generated .ice files are the same as Icestudio"""
+        """
+            src: Icestudio .ice file
+            target: Generated .ice file
+        """
+
+        #-- Read original file created with icestudio
+        ice = Ice()
+        ice.open_file(src)
+
+        #-- Save as an .ice file
+        with open(target, "w") as outfile:
+            json.dump(ice.json(), outfile, indent=2)
+
+        #-- Check that both files are equal...
+        self.assertTrue(filecmp.cmp(src, target))
+
+
     def test_Ice(self):
         """Test the constructor"""
 
         ice = Ice()
-        self.assertEqual(ice.version, "")
+        self.assertEqual(ice.version, "1.2")
         self.assertEqual(ice.package, Package())
         self.assertIsInstance(ice.design, Design)
         #--TODO: Compare if object ice.dependencies is equal to the empty one
@@ -1784,25 +1804,23 @@ class TestIce(unittest.TestCase):
 
         ice = Ice()
         self.assertEqual(str(ice),
-                         "Version: \n"
+                         "Version: 1.2\n"
                          "Package: Package(,,,,)\n"
                          "Design: * Design:\n"
+                         "Board: alhambra-ii\n"
                          "Graph: * Blocks: \n"
                          "* Wires: []\n\n\n"
                          "Dependencies: \n")
         
         ice = Ice(design=Design("alhambra-II"))
         self.assertEqual(str(ice),
-                         "Version: \n"
+                         "Version: 1.2\n"
                          "Package: Package(,,,,)\n"
                          "Design: * Design:\n"
                          "Board: alhambra-II\n"
                          "Graph: * Blocks: \n"
                          "* Wires: []\n\n\n"
                          "Dependencies: \n")
-
-
-
 
     def test_Ice_file(self):
         """Test Ice from json files"""
@@ -1828,7 +1846,7 @@ class TestIce(unittest.TestCase):
 
         ice = Ice()
         self.assertEqual(ice.json(),
-            {'version': '', 
+            {'version': '1.2', 
              'package': 
                 {'name': '', 
                  'version': '', 
@@ -1837,16 +1855,19 @@ class TestIce(unittest.TestCase):
                  'image': ''
                 }, 
             'design': 
-                {'graph': 
+                {
+                  'board': "alhambra-ii",
+                  'graph': 
                     {'blocks': [], 
-                    'wires': []}
+                     'wires': []
+                    }
                 }, 
                 'dependencies': {}})
 
         
         ice = Ice(design=Design("alhambra-ii"))
         self.assertEqual(ice.json(), 
-            {'version': '', 
+            {'version': '1.2', 
              'package': 
                 {'name': '', 
                  'version': '', 
@@ -1860,6 +1881,15 @@ class TestIce(unittest.TestCase):
                      'board': 'alhambra-ii'
                 }, 
             'dependencies': {}})
+        
+    def test_icestudio_blank(self):
+        """Check if generated .ice files are the same as Icestudio"""
+
+        FOLDER = "../Test-files/Icestudio"
+        TARGET = f"{FOLDER}/temp.ice"
+
+        #-- Blank icestudio circuit
+        self.compareIce(f"{FOLDER}/01-blank.ice", TARGET)
 
 
 if __name__ == '__main__':

@@ -1377,11 +1377,11 @@ class Design:
         return cad
     
     def json(self) -> dict:
-        obj = {
-            "graph": self.graph.json()
-        }
+        obj = {}
         if hasattr(self, "board"):
             obj['board'] = self.board
+        
+        obj['graph'] = self.graph.json()
 
         return obj
 
@@ -1481,9 +1481,9 @@ class Ice:
                         'basic.inputLabel', 'basic.outputLabel']
 
     def __init__(self, 
-                 version: str="", 
+                 version: str="1.2", 
                  package=Package(), 
-                 design=Design(), 
+                 design=Design(board="alhambra-ii"), 
                  dependencies=Dependencies()) -> None:
         
         #---- Version attribute
@@ -1558,7 +1558,7 @@ class Ice:
             
         #-- Initialize the class from the json object
         self.version = ice_json['version']
-        self.package = ice_json['package']
+        self.package = Package(**ice_json['package'])
         self.design = Design(**ice_json['design'])
         self.dependencies = Dependencies(ice_json['dependencies'])
 
