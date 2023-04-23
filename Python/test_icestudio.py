@@ -1110,7 +1110,7 @@ class TestDataLabel(unittest.TestCase):
             "name": "test",
             "blockColor": "green",
             "virtual": True,
-            "pins": Pins()
+            "pins": Pins().json()
             }
         )
 
@@ -1900,6 +1900,9 @@ class TestIce(unittest.TestCase):
 
         #-- Circuits with inputs and outputs
         self.compareIce(f"{FOLDER}/06-basic-input-output.ice", TARGET)
+
+        #-- Circuit with 1 input label
+        self.compareIce(f"{FOLDER}/07-basic-output-label.ice", TARGET)
 
 
         

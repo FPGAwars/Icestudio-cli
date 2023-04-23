@@ -969,7 +969,7 @@ class DataLabel:
             "name": self.name,
             "blockColor": self.blockColor,
             "virtual": self.virtual,
-            "pins": self.pins
+            "pins": self.pins.json()
         }
 
         if hasattr(self, "range"):
