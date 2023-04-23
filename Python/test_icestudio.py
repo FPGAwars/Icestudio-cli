@@ -1912,6 +1912,11 @@ class TestIce(unittest.TestCase):
         #-- Circuit with input and output labels
         self.compareIce(f"{FOLDER}/11-basic-input-output-label.ice", TARGET)
 
+        #-- Circuit with 1 constant
+        self.compareIce(f"{FOLDER}/12-basic-constant.ice", TARGET)
+        self.compareIce(f"{FOLDER}/13-basic-constant-2.ice", TARGET)
+
+        #-- Circuits with 1
 
 
 
