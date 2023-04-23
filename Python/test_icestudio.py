@@ -1901,9 +1901,18 @@ class TestIce(unittest.TestCase):
         #-- Circuits with inputs and outputs
         self.compareIce(f"{FOLDER}/06-basic-input-output.ice", TARGET)
 
-        #-- Circuit with 1 input label
+        #-- Circuits with 1 input label
         self.compareIce(f"{FOLDER}/07-basic-output-label.ice", TARGET)
         self.compareIce(f"{FOLDER}/08-basic-output-label-2.ice", TARGET)
+
+        #-- Circuits with 1 output label
+        self.compareIce(f"{FOLDER}/09-basic-input-label.ice", TARGET)
+        self.compareIce(f"{FOLDER}/10-basic-input-label-2.ice", TARGET)
+
+        #-- Circuit with input and output labels
+        self.compareIce(f"{FOLDER}/11-basic-input-output-label.ice", TARGET)
+
+
 
 
         

@@ -12,13 +12,19 @@
     "graph": {
       "blocks": [
         {
-          "id": "75c2ccf6-59ec-438b-961d-2c7f60db908e",
-          "type": "basic.inputLabel",
+          "id": "fd1cb1d5-b3bd-49de-9418-d9ec1eefc5bc",
+          "type": "basic.outputLabel",
           "data": {
             "name": "output",
+            "range": "[1:0]",
             "blockColor": "fuchsia",
             "virtual": true,
             "pins": [
+              {
+                "index": "1",
+                "name": "NULL",
+                "value": "NULL"
+              },
               {
                 "index": "0",
                 "name": "NULL",
@@ -27,8 +33,8 @@
             ]
           },
           "position": {
-            "x": -72,
-            "y": 136
+            "x": -336,
+            "y": 96
           }
         }
       ],

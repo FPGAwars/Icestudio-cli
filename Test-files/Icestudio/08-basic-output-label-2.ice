@@ -12,8 +12,8 @@
     "graph": {
       "blocks": [
         {
-          "id": "fd1cb1d5-b3bd-49de-9418-d9ec1eefc5bc",
-          "type": "basic.outputLabel",
+          "id": "cfbefb54-fac5-4680-b243-c6768ece64b5",
+          "type": "basic.inputLabel",
           "data": {
             "name": "output",
             "range": "[1:0]",
@@ -33,8 +33,8 @@
             ]
           },
           "position": {
-            "x": -336,
-            "y": 96
+            "x": -72,
+            "y": 136
           }
         }
       ],
