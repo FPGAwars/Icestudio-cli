@@ -1898,6 +1898,9 @@ class TestIce(unittest.TestCase):
         self.compareIce(f"{FOLDER}/04-basic-input.ice", TARGET)
         self.compareIce(f"{FOLDER}/05-basic-input-2.ice", TARGET)
 
+        #-- Circuits with inputs and outputs
+        self.compareIce(f"{FOLDER}/06-basic-input-output.ice", TARGET)
+
 
         
         
