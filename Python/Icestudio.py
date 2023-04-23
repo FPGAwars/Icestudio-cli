@@ -967,13 +967,14 @@ class DataLabel:
     def json(self) -> dict:
         obj = {
             "name": self.name,
-            "blockColor": self.blockColor,
-            "virtual": self.virtual,
-            "pins": self.pins.json()
         }
 
         if hasattr(self, "range"):
             obj["range"] = str(self.range)
+
+        obj["blockColor"] = self.blockColor
+        obj["virtual"] = self.virtual
+        obj["pins"] = self.pins.json()
 
         return obj
     

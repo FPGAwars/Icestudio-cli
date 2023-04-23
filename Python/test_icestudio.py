@@ -1903,6 +1903,7 @@ class TestIce(unittest.TestCase):
 
         #-- Circuit with 1 input label
         self.compareIce(f"{FOLDER}/07-basic-output-label.ice", TARGET)
+        self.compareIce(f"{FOLDER}/08-basic-output-label-2.ice", TARGET)
 
 
         
