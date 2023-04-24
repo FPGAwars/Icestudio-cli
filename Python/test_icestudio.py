@@ -47,6 +47,11 @@ class TestPackage(unittest.TestCase):
 
         self.assertEqual(str(exc.exception),"image is not an String")
 
+        with self.assertRaises(AttributeError) as exc:
+            Package(otid="dd")
+
+        self.assertEqual(str(exc.exception), "otid is not an Integer")
+
 
     def test_Package_str(self):
         """Test str method"""
@@ -1758,7 +1763,7 @@ class TestIce(unittest.TestCase):
 
         #-- Save as an .ice file
         with open(target, "w") as outfile:
-            json.dump(ice.json(), outfile, indent=2)
+            json.dump(ice.json(), outfile, indent=2, ensure_ascii=False)
 
         #-- Check that both files are equal...
         self.assertTrue(filecmp.cmp(src, target))
@@ -1924,9 +1929,15 @@ class TestIce(unittest.TestCase):
         self.compareIce(f"{FOLDER}/16-basic-code.ice", TARGET)
         self.compareIce(f"{FOLDER}/17-basic-code-2.ice", TARGET)
 
-        #-- Circuitos with 1 code info
+        #-- Circuits with 1 code info
         self.compareIce(f"{FOLDER}/18-basic-info.ice", TARGET)
         self.compareIce(f"{FOLDER}/19-basic-info-2.ice", TARGET)
+
+        #-- Circuits with 1 entity
+        self.compareIce(f"{FOLDER}/20-entity-doc.ice", TARGET)
+        self.compareIce(f"{FOLDER}/21-entity-doc-2.ice", TARGET)
+        self.compareIce(f"{FOLDER}/22-entity-ports.ice", TARGET)
+        self.compareIce(f"{FOLDER}/23-entity-ports-2.ice", TARGET)
 
 
 

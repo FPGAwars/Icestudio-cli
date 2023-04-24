@@ -9,7 +9,8 @@ class Package:
                  version:str="",
                  description:str="",
                  author:str="",
-                 image:str="") -> None:
+                 image:str="",
+                 otid=None) -> None:
         
         #-- Set the name attribute
         if isinstance(name, str):
@@ -41,6 +42,13 @@ class Package:
         else:
             raise AttributeError("image is not an String")
         
+        #-- Set the otid attribute, if it exists
+        if otid != None:
+            if isinstance(otid, int):
+                self.otid = otid
+            else:
+                raise AttributeError("otid is not an Integer")
+        
 
     def __str__(self) -> str:
         """String representation"""
@@ -55,13 +63,20 @@ class Package:
     def json(self):
         """Return the class as a Json object"""
     
-        return {
+        obj =  {
             "name" : self.name,
             "version": self.version,
             "description": self.description,
             "author": self.author,
             "image": self.image
         }
+
+        if hasattr(self, "otid"):
+            obj["otid"] = self.otid
+
+        return obj
+    
+
     
     def __eq__(self, __value: object) -> bool:
         """Compare two Size objects"""

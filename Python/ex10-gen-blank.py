@@ -3,7 +3,7 @@ import sys
 import json
 from Icestudio import Ice, Blocks, Dependencies
 
-FILE_SRC = "../Test-files/Icestudio/19-basic-info-2.ice"
+FILE_SRC = "../Test-files/Icestudio/23-entity-ports-2.ice"
 FILE_TARGET = "../Test-files/temp.ice"
 
 #-- Read original file created with icestudio
@@ -12,7 +12,7 @@ ice.open_file(FILE_SRC)
 
 #-- Save as an .ice file
 with open(FILE_TARGET, "w") as outfile:
-    json.dump(ice.json(), outfile, indent=2)
+    json.dump(ice.json(), outfile, indent=2, ensure_ascii=False)
 
 
 #-- Compare the two files
