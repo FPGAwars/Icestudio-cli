@@ -1921,6 +1921,8 @@ class TestIce(unittest.TestCase):
         self.compareIce(f"{FOLDER}/15-basic-memory-2.ice", TARGET)
 
         #-- Circuits with 1 code block
+        self.compareIce(f"{FOLDER}/16-basic-code.ice", TARGET)
+        self.compareIce(f"{FOLDER}/17-basic-code-2.ice", TARGET)
 
         #-- Circuitos with 1 code info
 
