@@ -3,12 +3,15 @@ import sys
 import json
 from Icestudio import Ice, Blocks, Dependencies
 
-FILE_SRC = "../Test-files/Icestudio/23-entity-ports-2.ice"
+FILE_SRC = "../Test-files/Icestudio/temp-wire.ice"
 FILE_TARGET = "../Test-files/temp.ice"
 
 #-- Read original file created with icestudio
 ice = Ice()
 ice.open_file(FILE_SRC)
+
+obj = ice.design.graph.wires
+print(type(obj))
 
 #-- Save as an .ice file
 with open(FILE_TARGET, "w") as outfile:

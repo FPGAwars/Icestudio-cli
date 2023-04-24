@@ -1512,7 +1512,7 @@ class TestGraph(unittest.TestCase):
         graph = Graph()
 
         self.assertTrue(isinstance(graph.blocks, Blocks))
-        self.assertTrue(isinstance(graph.wires, list))
+        self.assertTrue(isinstance(graph.wires, Wires))
         
         #-- TODO
         #self.assertEqual(graph.blocks, [])
@@ -1531,7 +1531,7 @@ class TestGraph(unittest.TestCase):
         graph = Graph()
         self.assertEqual(str(graph), 
                         "* Blocks: \n"
-                        "* Wires: []\n")
+                        "* Wires: \n")
 
 
     def test_Graph_file(self):
@@ -1586,7 +1586,7 @@ class TestDesign(unittest.TestCase):
                          "* Design:\n"
                          "Board: \n"
                          "Graph: * Blocks: \n"
-                         "* Wires: []\n\n")
+                         "* Wires: \n\n")
         
     def test_Design_file(self):
         """Test Design from json files"""
@@ -1629,7 +1629,7 @@ class TestUserBlock(unittest.TestCase):
                          "Package: Package(,,,,)\n"
                          "Design: * Design:\n"
                          "Graph: * Blocks: \n"
-                         "* Wires: []\n\n\n")
+                         "* Wires: \n\n\n")
 
 
     def test_UserBlock_json(self):
@@ -1694,11 +1694,11 @@ class TestDependencies(unittest.TestCase):
                          "b1->Package: Package(,,,,)\n"
                          "Design: * Design:\n"
                          "Graph: * Blocks: \n"
-                         "* Wires: []\n\n\n"
+                         "* Wires: \n\n\n"
                          "b2->Package: Package(,,,,)\n"
                          "Design: * Design:\n"
                          "Graph: * Blocks: \n"
-                         "* Wires: []\n\n\n")
+                         "* Wires: \n\n\n")
            
     def test_Dependencies_json(self):
         """Test json method"""
@@ -1813,7 +1813,7 @@ class TestIce(unittest.TestCase):
                          "Design: * Design:\n"
                          "Board: alhambra-ii\n"
                          "Graph: * Blocks: \n"
-                         "* Wires: []\n\n\n"
+                         "* Wires: \n\n\n"
                          "Dependencies: \n")
         
         ice = Ice(design=Design("alhambra-II"))
@@ -1823,7 +1823,7 @@ class TestIce(unittest.TestCase):
                          "Design: * Design:\n"
                          "Board: alhambra-II\n"
                          "Graph: * Blocks: \n"
-                         "* Wires: []\n\n\n"
+                         "* Wires: \n\n\n"
                          "Dependencies: \n")
 
     def test_Ice_file(self):
@@ -1938,6 +1938,10 @@ class TestIce(unittest.TestCase):
         self.compareIce(f"{FOLDER}/21-entity-doc-2.ice", TARGET)
         self.compareIce(f"{FOLDER}/22-entity-ports.ice", TARGET)
         self.compareIce(f"{FOLDER}/23-entity-ports-2.ice", TARGET)
+
+        #-- Circuitos with wires
+        #self.compareIce(f"{FOLDER}/24-wire-input-output.ice", TARGET)
+
 
 
 

@@ -1335,7 +1335,7 @@ class Blocks:
 class Graph:
     """Class for representing an Icestudio circuit"""
 
-    def __init__(self, blocks=Blocks(), wires=[]) -> None:
+    def __init__(self, blocks=Blocks(), wires=Wires()) -> None:
 
         #-- Set the blocks attribute
         if isinstance(blocks, Blocks):
@@ -1347,10 +1347,15 @@ class Graph:
 
             #-- Invalid type for blocks
         else:
-            raise AttributeError("blocks is not of type Blocks")
+            raise AttributeError("Invalid type for Blocks")
 
-
-        self.wires = wires
+        #-- Set the wires attribute
+        if isinstance(wires, Wires):
+            self.wires = wires
+        elif isinstance(wires, list):
+            self.wires = Wires(*wires)
+        else:
+            raise AttributeError("Invalid type for wires")
         
     def __str__(self) -> str:
         cad = f"* Blocks: {self.blocks}\n"
@@ -1362,7 +1367,7 @@ class Graph:
 
         return {
             "blocks": self.blocks.json(),
-            "wires": self.wires
+            "wires": self.wires.json()
         }
     
 class Design:
